@@ -63,6 +63,7 @@ namespace GetCookieFBTool
             this.clearSettingBtn = new System.Windows.Forms.Button();
             this.SaveSettingBtn = new System.Windows.Forms.Button();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.accPreCBox = new System.Windows.Forms.CheckBox();
             this.requestMBasicCBox = new System.Windows.Forms.CheckBox();
             this.addExtensionCBox = new System.Windows.Forms.CheckBox();
             this.checkIPCB = new System.Windows.Forms.CheckBox();
@@ -96,8 +97,16 @@ namespace GetCookieFBTool
             this.ProxyRoratingV6Mode = new System.Windows.Forms.RadioButton();
             this.TinsoftProxyMode = new System.Windows.Forms.RadioButton();
             this.ProxyRoratingV4Mode = new System.Windows.Forms.RadioButton();
-            this.ActionTab = new System.Windows.Forms.TabPage();
-            this.viewDataBtn = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.dtListResultOTP = new System.Windows.Forms.DataGridView();
+            this.STT = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.userName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.password = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cookies = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.accessToken = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.UserAgent = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.timeLabel = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
@@ -131,20 +140,10 @@ namespace GetCookieFBTool
             this.label6 = new System.Windows.Forms.Label();
             this.doneTbox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.viewDataBtn = new System.Windows.Forms.Button();
             this.resultBtn = new System.Windows.Forms.Button();
             this.stopBtn = new System.Windows.Forms.Button();
             this.startBtn = new System.Windows.Forms.Button();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.dtListResultOTP = new System.Windows.Forms.DataGridView();
-            this.STT = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.userName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.password = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cookies = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.accessToken = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.UserAgent = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.accPreCBox = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.SettingTab.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -157,17 +156,15 @@ namespace GetCookieFBTool
             ((System.ComponentModel.ISupportInitialize)(this.TimeRefreshUD)).BeginInit();
             this.groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TimeUpdateProxyUD)).BeginInit();
-            this.ActionTab.SuspendLayout();
-            this.groupBox5.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtListResultOTP)).BeginInit();
+            this.groupBox5.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.SettingTab);
-            this.tabControl1.Controls.Add(this.ActionTab);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -175,7 +172,7 @@ namespace GetCookieFBTool
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1001, 682);
+            this.tabControl1.Size = new System.Drawing.Size(1250, 808);
             this.tabControl1.TabIndex = 18;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -186,13 +183,19 @@ namespace GetCookieFBTool
             this.SettingTab.Location = new System.Drawing.Point(4, 24);
             this.SettingTab.Name = "SettingTab";
             this.SettingTab.Padding = new System.Windows.Forms.Padding(3);
-            this.SettingTab.Size = new System.Drawing.Size(993, 654);
+            this.SettingTab.Size = new System.Drawing.Size(1242, 780);
             this.SettingTab.TabIndex = 0;
             this.SettingTab.Text = "     Setting         ";
             // 
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
+            this.groupBox2.Controls.Add(this.viewDataBtn);
+            this.groupBox2.Controls.Add(this.resultBtn);
+            this.groupBox2.Controls.Add(this.stopBtn);
+            this.groupBox2.Controls.Add(this.startBtn);
+            this.groupBox2.Controls.Add(this.groupBox5);
+            this.groupBox2.Controls.Add(this.groupBox3);
             this.groupBox2.Controls.Add(this.groupBox8);
             this.groupBox2.Controls.Add(this.groupBox1);
             this.groupBox2.Controls.Add(this.clearBackupBtn);
@@ -206,7 +209,7 @@ namespace GetCookieFBTool
             this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox2.Size = new System.Drawing.Size(987, 650);
+            this.groupBox2.Size = new System.Drawing.Size(1232, 775);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             // 
@@ -224,9 +227,9 @@ namespace GetCookieFBTool
             this.groupBox8.Controls.Add(this.linkFixCBox);
             this.groupBox8.Controls.Add(this.label27);
             this.groupBox8.ForeColor = System.Drawing.SystemColors.Control;
-            this.groupBox8.Location = new System.Drawing.Point(536, 229);
+            this.groupBox8.Location = new System.Drawing.Point(10, 559);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(447, 381);
+            this.groupBox8.Size = new System.Drawing.Size(514, 169);
             this.groupBox8.TabIndex = 35;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Other Setting";
@@ -234,7 +237,7 @@ namespace GetCookieFBTool
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(22, 228);
+            this.label16.Location = new System.Drawing.Point(22, 143);
             this.label16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(71, 13);
@@ -246,7 +249,7 @@ namespace GetCookieFBTool
             // 
             this.urlRandom.AutoSize = true;
             this.urlRandom.Checked = true;
-            this.urlRandom.Location = new System.Drawing.Point(25, 110);
+            this.urlRandom.Location = new System.Drawing.Point(23, 79);
             this.urlRandom.Margin = new System.Windows.Forms.Padding(2);
             this.urlRandom.Name = "urlRandom";
             this.urlRandom.Size = new System.Drawing.Size(84, 17);
@@ -259,7 +262,7 @@ namespace GetCookieFBTool
             // 
             this.urlMFB.AutoSize = true;
             this.urlMFB.Checked = true;
-            this.urlMFB.Location = new System.Drawing.Point(25, 194);
+            this.urlMFB.Location = new System.Drawing.Point(283, 98);
             this.urlMFB.Margin = new System.Windows.Forms.Padding(2);
             this.urlMFB.Name = "urlMFB";
             this.urlMFB.Size = new System.Drawing.Size(114, 17);
@@ -272,7 +275,7 @@ namespace GetCookieFBTool
             // 
             this.urlMbasic.AutoSize = true;
             this.urlMbasic.Checked = true;
-            this.urlMbasic.Location = new System.Drawing.Point(25, 173);
+            this.urlMbasic.Location = new System.Drawing.Point(283, 77);
             this.urlMbasic.Margin = new System.Windows.Forms.Padding(2);
             this.urlMbasic.Name = "urlMbasic";
             this.urlMbasic.Size = new System.Drawing.Size(148, 17);
@@ -283,7 +286,7 @@ namespace GetCookieFBTool
             // 
             // urlCustom
             // 
-            this.urlCustom.Location = new System.Drawing.Point(98, 225);
+            this.urlCustom.Location = new System.Drawing.Point(98, 140);
             this.urlCustom.Name = "urlCustom";
             this.urlCustom.Size = new System.Drawing.Size(343, 19);
             this.urlCustom.TabIndex = 36;
@@ -293,7 +296,7 @@ namespace GetCookieFBTool
             // 
             this.urlFBCom.AutoSize = true;
             this.urlFBCom.Checked = true;
-            this.urlFBCom.Location = new System.Drawing.Point(25, 152);
+            this.urlFBCom.Location = new System.Drawing.Point(23, 121);
             this.urlFBCom.Margin = new System.Windows.Forms.Padding(2);
             this.urlFBCom.Name = "urlFBCom";
             this.urlFBCom.Size = new System.Drawing.Size(63, 17);
@@ -306,7 +309,7 @@ namespace GetCookieFBTool
             // 
             this.urlNomal.AutoSize = true;
             this.urlNomal.Checked = true;
-            this.urlNomal.Location = new System.Drawing.Point(25, 131);
+            this.urlNomal.Location = new System.Drawing.Point(23, 100);
             this.urlNomal.Margin = new System.Windows.Forms.Padding(2);
             this.urlNomal.Name = "urlNomal";
             this.urlNomal.Size = new System.Drawing.Size(238, 17);
@@ -317,7 +320,7 @@ namespace GetCookieFBTool
             // 
             // pageLoadUD
             // 
-            this.pageLoadUD.Location = new System.Drawing.Point(166, 73);
+            this.pageLoadUD.Location = new System.Drawing.Point(164, 42);
             this.pageLoadUD.Margin = new System.Windows.Forms.Padding(2);
             this.pageLoadUD.Maximum = new decimal(new int[] {
             500,
@@ -331,7 +334,7 @@ namespace GetCookieFBTool
             // label31
             // 
             this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(25, 79);
+            this.label31.Location = new System.Drawing.Point(23, 48);
             this.label31.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label31.Name = "label31";
             this.label31.Size = new System.Drawing.Size(117, 13);
@@ -340,7 +343,7 @@ namespace GetCookieFBTool
             // 
             // linkFixCBox
             // 
-            this.linkFixCBox.Location = new System.Drawing.Point(97, 39);
+            this.linkFixCBox.Location = new System.Drawing.Point(97, 18);
             this.linkFixCBox.Name = "linkFixCBox";
             this.linkFixCBox.Size = new System.Drawing.Size(344, 19);
             this.linkFixCBox.TabIndex = 30;
@@ -348,7 +351,7 @@ namespace GetCookieFBTool
             // label27
             // 
             this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(25, 42);
+            this.label27.Location = new System.Drawing.Point(25, 21);
             this.label27.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(44, 13);
@@ -535,7 +538,7 @@ namespace GetCookieFBTool
             this.clearBackupBtn.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.clearBackupBtn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.clearBackupBtn.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.clearBackupBtn.Location = new System.Drawing.Point(329, 616);
+            this.clearBackupBtn.Location = new System.Drawing.Point(81, 740);
             this.clearBackupBtn.Margin = new System.Windows.Forms.Padding(2);
             this.clearBackupBtn.Name = "clearBackupBtn";
             this.clearBackupBtn.Size = new System.Drawing.Size(98, 30);
@@ -549,7 +552,7 @@ namespace GetCookieFBTool
             this.clearSettingBtn.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.clearSettingBtn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.clearSettingBtn.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.clearSettingBtn.Location = new System.Drawing.Point(432, 616);
+            this.clearSettingBtn.Location = new System.Drawing.Point(184, 740);
             this.clearSettingBtn.Margin = new System.Windows.Forms.Padding(2);
             this.clearSettingBtn.Name = "clearSettingBtn";
             this.clearSettingBtn.Size = new System.Drawing.Size(93, 30);
@@ -563,7 +566,7 @@ namespace GetCookieFBTool
             this.SaveSettingBtn.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.SaveSettingBtn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.SaveSettingBtn.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.SaveSettingBtn.Location = new System.Drawing.Point(529, 616);
+            this.SaveSettingBtn.Location = new System.Drawing.Point(281, 740);
             this.SaveSettingBtn.Margin = new System.Windows.Forms.Padding(2);
             this.SaveSettingBtn.Name = "SaveSettingBtn";
             this.SaveSettingBtn.Size = new System.Drawing.Size(93, 30);
@@ -588,19 +591,30 @@ namespace GetCookieFBTool
             this.groupBox7.Controls.Add(this.hideModeRB);
             this.groupBox7.Controls.Add(this.showTaskbarModeRB);
             this.groupBox7.ForeColor = System.Drawing.SystemColors.Control;
-            this.groupBox7.Location = new System.Drawing.Point(536, 16);
+            this.groupBox7.Location = new System.Drawing.Point(10, 406);
             this.groupBox7.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox7.Size = new System.Drawing.Size(441, 206);
+            this.groupBox7.Size = new System.Drawing.Size(514, 148);
             this.groupBox7.TabIndex = 12;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Mode run";
             // 
+            // accPreCBox
+            // 
+            this.accPreCBox.AutoSize = true;
+            this.accPreCBox.Location = new System.Drawing.Point(228, 50);
+            this.accPreCBox.Margin = new System.Windows.Forms.Padding(2);
+            this.accPreCBox.Name = "accPreCBox";
+            this.accPreCBox.Size = new System.Drawing.Size(96, 17);
+            this.accPreCBox.TabIndex = 21;
+            this.accPreCBox.Text = "Acc Prepare";
+            this.accPreCBox.UseVisualStyleBackColor = true;
+            // 
             // requestMBasicCBox
             // 
             this.requestMBasicCBox.AutoSize = true;
-            this.requestMBasicCBox.Location = new System.Drawing.Point(25, 170);
+            this.requestMBasicCBox.Location = new System.Drawing.Point(228, 115);
             this.requestMBasicCBox.Name = "requestMBasicCBox";
             this.requestMBasicCBox.Size = new System.Drawing.Size(112, 17);
             this.requestMBasicCBox.TabIndex = 20;
@@ -610,7 +624,7 @@ namespace GetCookieFBTool
             // addExtensionCBox
             // 
             this.addExtensionCBox.AutoSize = true;
-            this.addExtensionCBox.Location = new System.Drawing.Point(228, 173);
+            this.addExtensionCBox.Location = new System.Drawing.Point(359, 86);
             this.addExtensionCBox.Name = "addExtensionCBox";
             this.addExtensionCBox.Size = new System.Drawing.Size(149, 17);
             this.addExtensionCBox.TabIndex = 19;
@@ -620,7 +634,7 @@ namespace GetCookieFBTool
             // checkIPCB
             // 
             this.checkIPCB.AutoSize = true;
-            this.checkIPCB.Location = new System.Drawing.Point(228, 145);
+            this.checkIPCB.Location = new System.Drawing.Point(359, 58);
             this.checkIPCB.Margin = new System.Windows.Forms.Padding(2);
             this.checkIPCB.Name = "checkIPCB";
             this.checkIPCB.Size = new System.Drawing.Size(77, 17);
@@ -631,7 +645,7 @@ namespace GetCookieFBTool
             // fakeUserAgentCB
             // 
             this.fakeUserAgentCB.AutoSize = true;
-            this.fakeUserAgentCB.Location = new System.Drawing.Point(228, 112);
+            this.fakeUserAgentCB.Location = new System.Drawing.Point(359, 25);
             this.fakeUserAgentCB.Margin = new System.Windows.Forms.Padding(2);
             this.fakeUserAgentCB.Name = "fakeUserAgentCB";
             this.fakeUserAgentCB.Size = new System.Drawing.Size(118, 17);
@@ -642,7 +656,7 @@ namespace GetCookieFBTool
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(122, 129);
+            this.label25.Location = new System.Drawing.Point(119, 119);
             this.label25.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(50, 13);
@@ -652,7 +666,7 @@ namespace GetCookieFBTool
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(25, 106);
+            this.label24.Location = new System.Drawing.Point(25, 92);
             this.label24.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(77, 13);
@@ -662,7 +676,7 @@ namespace GetCookieFBTool
             // TimeRefreshUD
             // 
             this.TimeRefreshUD.ForeColor = System.Drawing.SystemColors.InfoText;
-            this.TimeRefreshUD.Location = new System.Drawing.Point(25, 127);
+            this.TimeRefreshUD.Location = new System.Drawing.Point(25, 113);
             this.TimeRefreshUD.Margin = new System.Windows.Forms.Padding(2);
             this.TimeRefreshUD.Name = "TimeRefreshUD";
             this.TimeRefreshUD.Size = new System.Drawing.Size(90, 19);
@@ -698,7 +712,7 @@ namespace GetCookieFBTool
             // showAllModeRB
             // 
             this.showAllModeRB.AutoSize = true;
-            this.showAllModeRB.Location = new System.Drawing.Point(25, 81);
+            this.showAllModeRB.Location = new System.Drawing.Point(25, 66);
             this.showAllModeRB.Margin = new System.Windows.Forms.Padding(2);
             this.showAllModeRB.Name = "showAllModeRB";
             this.showAllModeRB.Size = new System.Drawing.Size(71, 17);
@@ -722,7 +736,7 @@ namespace GetCookieFBTool
             // showTaskbarModeRB
             // 
             this.showTaskbarModeRB.AutoSize = true;
-            this.showTaskbarModeRB.Location = new System.Drawing.Point(25, 50);
+            this.showTaskbarModeRB.Location = new System.Drawing.Point(25, 45);
             this.showTaskbarModeRB.Margin = new System.Windows.Forms.Padding(2);
             this.showTaskbarModeRB.Name = "showTaskbarModeRB";
             this.showTaskbarModeRB.Size = new System.Drawing.Size(100, 17);
@@ -757,7 +771,7 @@ namespace GetCookieFBTool
             this.groupBox6.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox6.Size = new System.Drawing.Size(514, 381);
+            this.groupBox6.Size = new System.Drawing.Size(514, 169);
             this.groupBox6.TabIndex = 10;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Choose Mode Proxy";
@@ -832,16 +846,16 @@ namespace GetCookieFBTool
             // 
             this.IPSTbox.Font = new System.Drawing.Font("Microsoft YaHei", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.IPSTbox.ForeColor = System.Drawing.SystemColors.InfoText;
-            this.IPSTbox.Location = new System.Drawing.Point(40, 350);
+            this.IPSTbox.Location = new System.Drawing.Point(287, 80);
             this.IPSTbox.Margin = new System.Windows.Forms.Padding(2);
             this.IPSTbox.Name = "IPSTbox";
-            this.IPSTbox.Size = new System.Drawing.Size(190, 23);
+            this.IPSTbox.Size = new System.Drawing.Size(213, 23);
             this.IPSTbox.TabIndex = 61;
             // 
             // label30
             // 
             this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(7, 355);
+            this.label30.Location = new System.Drawing.Point(254, 85);
             this.label30.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(23, 13);
@@ -981,35 +995,96 @@ namespace GetCookieFBTool
             this.ProxyRoratingV4Mode.Text = "proxy rotating v4";
             this.ProxyRoratingV4Mode.UseVisualStyleBackColor = true;
             // 
-            // ActionTab
+            // timer1
             // 
-            this.ActionTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
-            this.ActionTab.Controls.Add(this.viewDataBtn);
-            this.ActionTab.Controls.Add(this.groupBox5);
-            this.ActionTab.Controls.Add(this.resultBtn);
-            this.ActionTab.Controls.Add(this.stopBtn);
-            this.ActionTab.Controls.Add(this.startBtn);
-            this.ActionTab.Controls.Add(this.groupBox3);
-            this.ActionTab.Location = new System.Drawing.Point(4, 24);
-            this.ActionTab.Name = "ActionTab";
-            this.ActionTab.Padding = new System.Windows.Forms.Padding(3);
-            this.ActionTab.Size = new System.Drawing.Size(993, 654);
-            this.ActionTab.TabIndex = 1;
-            this.ActionTab.Text = "   Action          ";
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // viewDataBtn
+            // groupBox3
             // 
-            this.viewDataBtn.BackColor = System.Drawing.SystemColors.Info;
-            this.viewDataBtn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.viewDataBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.viewDataBtn.Location = new System.Drawing.Point(603, 514);
-            this.viewDataBtn.Margin = new System.Windows.Forms.Padding(2);
-            this.viewDataBtn.Name = "viewDataBtn";
-            this.viewDataBtn.Size = new System.Drawing.Size(121, 33);
-            this.viewDataBtn.TabIndex = 24;
-            this.viewDataBtn.Text = "VIEW DATA";
-            this.viewDataBtn.UseVisualStyleBackColor = false;
-            this.viewDataBtn.Click += new System.EventHandler(this.viewDataBtn_Click);
+            this.groupBox3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
+            this.groupBox3.Controls.Add(this.dtListResultOTP);
+            this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox3.ForeColor = System.Drawing.SystemColors.Control;
+            this.groupBox3.Location = new System.Drawing.Point(528, 16);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox3.Size = new System.Drawing.Size(700, 522);
+            this.groupBox3.TabIndex = 36;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Result";
+            // 
+            // dtListResultOTP
+            // 
+            this.dtListResultOTP.BackgroundColor = System.Drawing.Color.Gainsboro;
+            this.dtListResultOTP.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtListResultOTP.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.STT,
+            this.Status,
+            this.userName,
+            this.password,
+            this.cookies,
+            this.accessToken,
+            this.UserAgent});
+            this.dtListResultOTP.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dtListResultOTP.GridColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.dtListResultOTP.Location = new System.Drawing.Point(2, 14);
+            this.dtListResultOTP.Margin = new System.Windows.Forms.Padding(2);
+            this.dtListResultOTP.Name = "dtListResultOTP";
+            this.dtListResultOTP.RowHeadersWidth = 51;
+            this.dtListResultOTP.RowTemplate.Height = 24;
+            this.dtListResultOTP.Size = new System.Drawing.Size(696, 506);
+            this.dtListResultOTP.TabIndex = 0;
+            // 
+            // STT
+            // 
+            this.STT.HeaderText = "STT";
+            this.STT.MinimumWidth = 6;
+            this.STT.Name = "STT";
+            this.STT.Width = 80;
+            // 
+            // Status
+            // 
+            this.Status.HeaderText = "Status";
+            this.Status.MinimumWidth = 6;
+            this.Status.Name = "Status";
+            this.Status.Width = 150;
+            // 
+            // userName
+            // 
+            this.userName.HeaderText = "Uid";
+            this.userName.MinimumWidth = 6;
+            this.userName.Name = "userName";
+            this.userName.Width = 125;
+            // 
+            // password
+            // 
+            this.password.HeaderText = "password";
+            this.password.MinimumWidth = 6;
+            this.password.Name = "password";
+            this.password.Width = 125;
+            // 
+            // cookies
+            // 
+            this.cookies.HeaderText = "cookies";
+            this.cookies.MinimumWidth = 6;
+            this.cookies.Name = "cookies";
+            this.cookies.Width = 200;
+            // 
+            // accessToken
+            // 
+            this.accessToken.HeaderText = "accessToken";
+            this.accessToken.MinimumWidth = 6;
+            this.accessToken.Name = "accessToken";
+            this.accessToken.Width = 125;
+            // 
+            // UserAgent
+            // 
+            this.UserAgent.HeaderText = "UserAgent";
+            this.UserAgent.MinimumWidth = 6;
+            this.UserAgent.Name = "UserAgent";
+            this.UserAgent.Width = 200;
             // 
             // groupBox5
             // 
@@ -1038,12 +1113,12 @@ namespace GetCookieFBTool
             this.groupBox5.Controls.Add(this.label7);
             this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox5.ForeColor = System.Drawing.SystemColors.Control;
-            this.groupBox5.Location = new System.Drawing.Point(3, 550);
+            this.groupBox5.Location = new System.Drawing.Point(530, 539);
             this.groupBox5.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox5.Size = new System.Drawing.Size(981, 101);
-            this.groupBox5.TabIndex = 23;
+            this.groupBox5.Size = new System.Drawing.Size(696, 189);
+            this.groupBox5.TabIndex = 37;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Status";
             // 
@@ -1078,7 +1153,7 @@ namespace GetCookieFBTool
             this.groupBox4.Controls.Add(this.success1HourTBox);
             this.groupBox4.Controls.Add(this.label2);
             this.groupBox4.ForeColor = System.Drawing.SystemColors.Control;
-            this.groupBox4.Location = new System.Drawing.Point(484, 8);
+            this.groupBox4.Location = new System.Drawing.Point(9, 96);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(316, 88);
             this.groupBox4.TabIndex = 29;
@@ -1222,19 +1297,19 @@ namespace GetCookieFBTool
             this.button1.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.button1.Location = new System.Drawing.Point(910, 67);
+            this.button1.Location = new System.Drawing.Point(601, 64);
             this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(67, 24);
             this.button1.TabIndex = 26;
             this.button1.Text = "clear Backup";
             this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(812, 49);
+            this.label20.Location = new System.Drawing.Point(516, 47);
             this.label20.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(100, 16);
@@ -1245,7 +1320,7 @@ namespace GetCookieFBTool
             // 
             this.numBackupTB.BackColor = System.Drawing.Color.White;
             this.numBackupTB.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.numBackupTB.Location = new System.Drawing.Point(815, 69);
+            this.numBackupTB.Location = new System.Drawing.Point(519, 67);
             this.numBackupTB.Margin = new System.Windows.Forms.Padding(2);
             this.numBackupTB.Multiline = true;
             this.numBackupTB.Name = "numBackupTB";
@@ -1407,33 +1482,50 @@ namespace GetCookieFBTool
             this.label7.TabIndex = 11;
             this.label7.Text = "success";
             // 
+            // viewDataBtn
+            // 
+            this.viewDataBtn.BackColor = System.Drawing.SystemColors.Info;
+            this.viewDataBtn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.viewDataBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.viewDataBtn.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.viewDataBtn.Location = new System.Drawing.Point(1031, 733);
+            this.viewDataBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.viewDataBtn.Name = "viewDataBtn";
+            this.viewDataBtn.Size = new System.Drawing.Size(121, 33);
+            this.viewDataBtn.TabIndex = 41;
+            this.viewDataBtn.Text = "VIEW DATA";
+            this.viewDataBtn.UseVisualStyleBackColor = false;
+            this.viewDataBtn.Click += new System.EventHandler(this.viewDataBtn_Click_1);
+            // 
             // resultBtn
             // 
             this.resultBtn.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.resultBtn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.resultBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.resultBtn.Location = new System.Drawing.Point(477, 513);
+            this.resultBtn.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.resultBtn.Location = new System.Drawing.Point(905, 732);
             this.resultBtn.Margin = new System.Windows.Forms.Padding(2);
             this.resultBtn.Name = "resultBtn";
             this.resultBtn.Size = new System.Drawing.Size(121, 33);
-            this.resultBtn.TabIndex = 21;
+            this.resultBtn.TabIndex = 40;
             this.resultBtn.Text = "VIEW RESULT";
             this.resultBtn.UseVisualStyleBackColor = false;
-            this.resultBtn.Click += new System.EventHandler(this.resultBtn_Click);
+            this.resultBtn.Click += new System.EventHandler(this.resultBtn_Click_1);
             // 
             // stopBtn
             // 
             this.stopBtn.BackColor = System.Drawing.Color.Brown;
             this.stopBtn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.stopBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.stopBtn.Location = new System.Drawing.Point(341, 513);
+            this.stopBtn.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.stopBtn.Location = new System.Drawing.Point(769, 732);
             this.stopBtn.Margin = new System.Windows.Forms.Padding(2);
             this.stopBtn.Name = "stopBtn";
             this.stopBtn.Size = new System.Drawing.Size(131, 33);
-            this.stopBtn.TabIndex = 20;
+            this.stopBtn.TabIndex = 39;
             this.stopBtn.Text = "STOP";
             this.stopBtn.UseVisualStyleBackColor = false;
-            this.stopBtn.Click += new System.EventHandler(this.stopBtn_Click);
+            this.stopBtn.Click += new System.EventHandler(this.stopBtn_Click_1);
             // 
             // startBtn
             // 
@@ -1442,116 +1534,15 @@ namespace GetCookieFBTool
             this.startBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.startBtn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.startBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.startBtn.Location = new System.Drawing.Point(206, 513);
+            this.startBtn.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.startBtn.Location = new System.Drawing.Point(634, 732);
             this.startBtn.Margin = new System.Windows.Forms.Padding(2);
             this.startBtn.Name = "startBtn";
             this.startBtn.Size = new System.Drawing.Size(130, 33);
-            this.startBtn.TabIndex = 19;
+            this.startBtn.TabIndex = 38;
             this.startBtn.Text = "START";
             this.startBtn.UseVisualStyleBackColor = false;
-            this.startBtn.Click += new System.EventHandler(this.startBtn_Click);
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
-            this.groupBox3.Controls.Add(this.dtListResultOTP);
-            this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox3.ForeColor = System.Drawing.SystemColors.Control;
-            this.groupBox3.Location = new System.Drawing.Point(3, 5);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(2);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox3.Size = new System.Drawing.Size(983, 504);
-            this.groupBox3.TabIndex = 18;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Result";
-            // 
-            // dtListResultOTP
-            // 
-            this.dtListResultOTP.BackgroundColor = System.Drawing.Color.Gainsboro;
-            this.dtListResultOTP.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtListResultOTP.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.STT,
-            this.Status,
-            this.userName,
-            this.password,
-            this.cookies,
-            this.accessToken,
-            this.UserAgent});
-            this.dtListResultOTP.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dtListResultOTP.GridColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.dtListResultOTP.Location = new System.Drawing.Point(2, 14);
-            this.dtListResultOTP.Margin = new System.Windows.Forms.Padding(2);
-            this.dtListResultOTP.Name = "dtListResultOTP";
-            this.dtListResultOTP.RowHeadersWidth = 51;
-            this.dtListResultOTP.RowTemplate.Height = 24;
-            this.dtListResultOTP.Size = new System.Drawing.Size(979, 488);
-            this.dtListResultOTP.TabIndex = 0;
-            // 
-            // STT
-            // 
-            this.STT.HeaderText = "STT";
-            this.STT.MinimumWidth = 6;
-            this.STT.Name = "STT";
-            this.STT.Width = 80;
-            // 
-            // Status
-            // 
-            this.Status.HeaderText = "Status";
-            this.Status.MinimumWidth = 6;
-            this.Status.Name = "Status";
-            this.Status.Width = 150;
-            // 
-            // userName
-            // 
-            this.userName.HeaderText = "Uid";
-            this.userName.MinimumWidth = 6;
-            this.userName.Name = "userName";
-            this.userName.Width = 125;
-            // 
-            // password
-            // 
-            this.password.HeaderText = "password";
-            this.password.MinimumWidth = 6;
-            this.password.Name = "password";
-            this.password.Width = 125;
-            // 
-            // cookies
-            // 
-            this.cookies.HeaderText = "cookies";
-            this.cookies.MinimumWidth = 6;
-            this.cookies.Name = "cookies";
-            this.cookies.Width = 200;
-            // 
-            // accessToken
-            // 
-            this.accessToken.HeaderText = "accessToken";
-            this.accessToken.MinimumWidth = 6;
-            this.accessToken.Name = "accessToken";
-            this.accessToken.Width = 125;
-            // 
-            // UserAgent
-            // 
-            this.UserAgent.HeaderText = "UserAgent";
-            this.UserAgent.MinimumWidth = 6;
-            this.UserAgent.Name = "UserAgent";
-            this.UserAgent.Width = 200;
-            // 
-            // timer1
-            // 
-            this.timer1.Interval = 1000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // accPreCBox
-            // 
-            this.accPreCBox.AutoSize = true;
-            this.accPreCBox.Location = new System.Drawing.Point(228, 50);
-            this.accPreCBox.Margin = new System.Windows.Forms.Padding(2);
-            this.accPreCBox.Name = "accPreCBox";
-            this.accPreCBox.Size = new System.Drawing.Size(96, 17);
-            this.accPreCBox.TabIndex = 21;
-            this.accPreCBox.Text = "Acc Prepare";
-            this.accPreCBox.UseVisualStyleBackColor = true;
+            this.startBtn.Click += new System.EventHandler(this.startBtn_Click_1);
             // 
             // FromMain
             // 
@@ -1559,7 +1550,7 @@ namespace GetCookieFBTool
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
-            this.ClientSize = new System.Drawing.Size(1001, 682);
+            this.ClientSize = new System.Drawing.Size(1250, 808);
             this.Controls.Add(this.tabControl1);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -1584,13 +1575,12 @@ namespace GetCookieFBTool
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TimeUpdateProxyUD)).EndInit();
-            this.ActionTab.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dtListResultOTP)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dtListResultOTP)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1630,28 +1620,6 @@ namespace GetCookieFBTool
         private System.Windows.Forms.RadioButton ProxyRoratingV6Mode;
         private System.Windows.Forms.RadioButton TinsoftProxyMode;
         private System.Windows.Forms.RadioButton ProxyRoratingV4Mode;
-        private System.Windows.Forms.TabPage ActionTab;
-        private System.Windows.Forms.Button viewDataBtn;
-        private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.TextBox lostCookieTbox;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.TextBox checkpointTBox;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Label ProgramStateLB;
-        private System.Windows.Forms.Label ProxyStateLb;
-        private System.Windows.Forms.TextBox totalAccTBox;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox errorTbox;
-        private System.Windows.Forms.TextBox countProxyTBox;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox doneTbox;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Button resultBtn;
-        private System.Windows.Forms.Button stopBtn;
-        private System.Windows.Forms.Button startBtn;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.DataGridView dtListResultOTP;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox IPSTbox;
         private System.Windows.Forms.Label label30;
@@ -1666,15 +1634,6 @@ namespace GetCookieFBTool
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown threadCountNumUD;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.TextBox numBackupTB;
-        private System.Windows.Forms.DataGridViewTextBoxColumn STT;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Status;
-        private System.Windows.Forms.DataGridViewTextBoxColumn userName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn password;
-        private System.Windows.Forms.DataGridViewTextBoxColumn cookies;
-        private System.Windows.Forms.DataGridViewTextBoxColumn accessToken;
-        private System.Windows.Forms.DataGridViewTextBoxColumn UserAgent;
         private System.Windows.Forms.RadioButton ProxyMobieMode;
         private System.Windows.Forms.RadioButton POCProxyMode;
         private System.Windows.Forms.CheckBox checkIPCB;
@@ -1683,11 +1642,25 @@ namespace GetCookieFBTool
         public System.Windows.Forms.RadioButton ProxyNo1Mode;
         private System.Windows.Forms.RadioButton ProxyShopLikeMode;
         private System.Windows.Forms.RadioButton ZProxyMode;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.CheckBox addExtensionCBox;
         public System.Windows.Forms.RadioButton POCWanProxyMode;
-        private System.Windows.Forms.TextBox spamTBox;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.RadioButton urlNomal;
+        private System.Windows.Forms.RadioButton urlFBCom;
+        private System.Windows.Forms.TextBox urlCustom;
+        private System.Windows.Forms.CheckBox requestMBasicCBox;
+        private System.Windows.Forms.RadioButton urlMFB;
+        private System.Windows.Forms.RadioButton urlMbasic;
+        private System.Windows.Forms.RadioButton urlRandom;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.CheckBox accPreCBox;
+        private System.Windows.Forms.Button viewDataBtn;
+        private System.Windows.Forms.Button resultBtn;
+        private System.Windows.Forms.Button stopBtn;
+        private System.Windows.Forms.Button startBtn;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Label timeLabel;
+        private System.Windows.Forms.Label label15;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.TextBox lost1HourTBox;
         private System.Windows.Forms.Label label12;
@@ -1699,18 +1672,34 @@ namespace GetCookieFBTool
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox success1HourTBox;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label timeLabel;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.RadioButton urlNomal;
-        private System.Windows.Forms.RadioButton urlFBCom;
-        private System.Windows.Forms.TextBox urlCustom;
-        private System.Windows.Forms.CheckBox requestMBasicCBox;
-        private System.Windows.Forms.RadioButton urlMFB;
-        private System.Windows.Forms.RadioButton urlMbasic;
-        private System.Windows.Forms.RadioButton urlRandom;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.CheckBox accPreCBox;
+        private System.Windows.Forms.TextBox spamTBox;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox numBackupTB;
+        private System.Windows.Forms.TextBox lostCookieTbox;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.TextBox checkpointTBox;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label ProgramStateLB;
+        private System.Windows.Forms.Label ProxyStateLb;
+        private System.Windows.Forms.TextBox totalAccTBox;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox errorTbox;
+        private System.Windows.Forms.TextBox countProxyTBox;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox doneTbox;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.DataGridView dtListResultOTP;
+        private System.Windows.Forms.DataGridViewTextBoxColumn STT;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Status;
+        private System.Windows.Forms.DataGridViewTextBoxColumn userName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn password;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cookies;
+        private System.Windows.Forms.DataGridViewTextBoxColumn accessToken;
+        private System.Windows.Forms.DataGridViewTextBoxColumn UserAgent;
     }
 }
 

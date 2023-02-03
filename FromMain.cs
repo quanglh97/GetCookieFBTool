@@ -271,6 +271,17 @@ namespace GetCookieFBTool
                 {
                     FacebookInstances.queueAccPre.Enqueue(acc);
                 }
+                Random random = new Random();
+                int a1 = random.Next(1, 5000);
+                while(a1 > 0)
+                {
+                    string acc = "";
+                    FacebookInstances.queueAccPre.TryDequeue(out acc);
+                    if(acc != null && acc != "")
+                        FacebookInstances.queueAccPre.Enqueue(acc);
+                    a1--;
+                }
+
 
             }
 
@@ -346,6 +357,16 @@ namespace GetCookieFBTool
                 HashSet<string> hashSet = new HashSet<string>();
                 hashSet.UnionWith(FileLoader.LoadStringsFromFile(CookiePreparePath));
                 FacebookInstances.cookiePrepare = new ConcurrentQueue<string>(hashSet);
+                Random random = new Random();
+                int a1 = random.Next(1, 5000);
+                while (a1 > 0)
+                {
+                    string acc = "";
+                    FacebookInstances.cookiePrepare.TryDequeue(out acc);
+                    if (acc != null && acc != "")
+                        FacebookInstances.cookiePrepare.Enqueue(acc);
+                    a1--;
+                }
             }
 
             if (File.Exists(settingPath))
@@ -1138,7 +1159,7 @@ namespace GetCookieFBTool
             //if (FacebookInstances.MultiThrs.queueAccs.Count == 0)
             //    MessageBox.Show(this, "CHẠY XONG !!!!");
         }
-        private void startBtn_Click(object sender, EventArgs e)
+        private void startBtn_Click_1(object sender, EventArgs e)
         {
 
             if (requestMBasicCBox.Checked == true)
@@ -1335,7 +1356,7 @@ namespace GetCookieFBTool
         }
 
 
-        private void stopBtn_Click(object sender, EventArgs e)
+        private void stopBtn_Click_1(object sender, EventArgs e)
         {
             timer1.Stop();
             runTime = 0;
@@ -1374,12 +1395,12 @@ namespace GetCookieFBTool
             FacebookInstances.typeAcc = this.typeAccTB.Text;
         }
 
-        private void resultBtn_Click(object sender, EventArgs e)
+        private void resultBtn_Click_1(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start(AppDomain.CurrentDomain.BaseDirectory + "Result//");
         }
 
-        private void viewDataBtn_Click(object sender, EventArgs e)
+        private void viewDataBtn_Click_1(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start(AppDomain.CurrentDomain.BaseDirectory + "data//");
         }
@@ -1624,7 +1645,7 @@ namespace GetCookieFBTool
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button1_Click_1(object sender, EventArgs e)
         {
             try
             {
