@@ -124,6 +124,7 @@
     <Compile Include="HelperLibrary\HelperProxy\ProxyInstances.cs" />
     <Compile Include="HelperLibrary\Statistic.cs" />
     <Compile Include="HelperLibrary\UpdateChromeDriver.cs" />
+    <Compile Include="HelperLibrary\HelperProxy\MyProxyChecker.cs" />
     <Compile Include="ProcessHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

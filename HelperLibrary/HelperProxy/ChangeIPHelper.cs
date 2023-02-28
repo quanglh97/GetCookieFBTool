@@ -66,7 +66,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
                 string new_proxy = jsonResult["data"]["https"].ToString();
 
                 if (new_proxy.Equals(""))
-                    return jsonResult["message"].ToString();
+                    return "";
                 else
                     return new_proxy;
 
@@ -168,7 +168,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
 
                 if (jObject["success"].ToString().Contains("alse"))
                 {
-                    return jObject.ToString();
+                    return "";
                 }
 
 
@@ -502,6 +502,31 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
             return null;
         }
 
+        public static string ChangeZProxy2(string key)
+        {
+            //MessageBox.Show("change POC proxy!", "check");
+            try
+            {
+                var client = new RestClient($"http://51.79.161.132:8080/socks5?apikey={key}&ip={CoreProxy.ips}&changenow=1");
+                client.Timeout = -1;
+                var request = new RestRequest(Method.GET);
+                IRestResponse response = client.Execute(request);
+                JObject jObject = JObject.Parse(response.Content);
+                if (jObject["code"].ToString() == "1")
+                    return $"{jObject["message"]}";
+                else
+                {
+                    return CurentZProxy2(key);
+                }
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show(ex.Message, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return null;
+        }
+
+
         public static string CurentZProxy(string key)
         {
             //MessageBox.Show("change POC proxy!", "check");
@@ -517,6 +542,28 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
                 JObject jObject = JObject.Parse(response.Content);
                 if (jObject["message"].ToString().Contains("SUCCESS"))
                     return $"{jObject["data"]["host"].ToString()}:{jObject["data"]["port"].ToString()}";
+                else
+                    return "";
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show(ex.Message, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return null;
+        }
+
+        public static string CurentZProxy2(string key)
+        {
+            //MessageBox.Show("change POC proxy!", "check");
+            try
+            {
+                var client = new RestClient($"http://51.79.161.132:8080/socks5?apikey={key}ip={CoreProxy.ips}");
+                client.Timeout = -1;
+                var request = new RestRequest(Method.GET);
+                IRestResponse response = client.Execute(request);
+                JObject jObject = JObject.Parse(response.Content);
+                if (jObject["code"].ToString()=="1")
+                    return $"{jObject["message"]}";
                 else
                     return "";
             }
@@ -576,7 +623,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
             {
                 //MessageBox.Show(ex.Message, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            return null;
+            return "";
         }
 
         public static string ChangeNo1Proxy(string key)

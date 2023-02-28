@@ -152,7 +152,7 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                             || ProxyInstances.type == 4 || ProxyInstances.type == 5
                             || ProxyInstances.type == 7 || ProxyInstances.type == 8 || ProxyInstances.type == 9
                             || ProxyInstances.type == 10 || ProxyInstances.type == 11 || ProxyInstances.type == 12
-                            || ProxyInstances.type == 13)
+                            || ProxyInstances.type == 13 || ProxyInstances.type == 14)
                         {
                             if (currentTime - ProxyInstances.beginTime <= ProxyInstances.timeUpdate)
                             {
@@ -164,7 +164,7 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
 
                         if (new_proxy.Split(':').Length <= 2)
                         {
-                            if (ProxyInstances.type != 10)
+                            if (ProxyInstances.type != 10 && ProxyInstances.type != 14)
                             {
                                 var proxy = new Proxy();
                                 proxy.Kind = ProxyKind.Manual;
@@ -199,11 +199,11 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                 driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(FacebookInstances.pageLoadTime);
 
                 Thread.Sleep(FacebookInstances.delayLevel);
-                //if (FacebookInstances.linkFix != null && FacebookInstances.linkFix != "")
-                //{
-                //    driver.Navigate().GoToUrl(FacebookInstances.linkFix);
-                //    Thread.Sleep(2000);
-                //}
+                if (FacebookInstances.linkFix != null && FacebookInstances.linkFix != "")
+                {
+                    driver.Navigate().GoToUrl(FacebookInstances.linkFix);
+                    Thread.Sleep(2000);
+                }
 
                 //if (FacebookInstances.CookieSP)
                 //{
@@ -528,7 +528,7 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                     {
                         driver.Navigate().GoToUrl("https://m.facebook.com/");
                     }
-                    Thread.Sleep(4000);
+                    Thread.Sleep(1000);
                     var userInput = driver.FindElement(By.Id("m_login_email"));
                     var passInput = driver.FindElement(By.Name("pass"));
                     var loginBtn = driver.FindElement(By.Name("login"));

@@ -1,6 +1,8 @@
 ﻿using GetCookieFBTool.HelperLibrary;
 using GetCookieFBTool.HelperLibrary.Facebook;
 using GetCookieFBTool.HelperLibrary.HelperProxy;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -56,6 +58,7 @@ namespace GetCookieFBTool
         public static List<object> argumentsPOCProxy = new List<object>();
 
         public static List<object> argumentsZProxy = new List<object>();
+        public static List<object> argumentsZProxy2 = new List<object>();
         public static List<object> argumentsNo1Proxy = new List<object>();
         public static List<object> argumentsShopLikeProxy = new List<object>();
         public static List<object> argumentsPOCWanProxy = new List<object>();
@@ -110,7 +113,7 @@ namespace GetCookieFBTool
             {
                 listAccCbBox.SelectedIndex = 0;
                 defaultSetting();
-
+                //IPSTbox.Text = AddIP();
             }
             catch
             {
@@ -183,6 +186,7 @@ namespace GetCookieFBTool
                         if (!FacebookInstances.MultiThrs.IsStopping)
                         {
                             FacebookInstances.MultiThrs.Cancel();
+                            ProcessHelper.KillAllProcessTree("chromedriver");
                         }
                         break;
                 }
@@ -244,6 +248,7 @@ namespace GetCookieFBTool
             var POCWanProxyFilePath = AppDomain.CurrentDomain.BaseDirectory + "data//" + "POCWanProxy.txt";
 
             var ZProxyFilePath = AppDomain.CurrentDomain.BaseDirectory + "data//" + "ZProxy.txt";
+            var ZProxy2FilePath = AppDomain.CurrentDomain.BaseDirectory + "data//" + "ZProxy2.txt";
             var ProxyNo1FilePath = AppDomain.CurrentDomain.BaseDirectory + "data//" + "ProxyNo1.txt";
             var ProxyShopLikeFilePath = AppDomain.CurrentDomain.BaseDirectory + "data//" + "ProxyShopLike.txt";
 
@@ -351,6 +356,10 @@ namespace GetCookieFBTool
             {
                 argumentsShopLikeProxy.Add(ProxyShopLikeFilePath);
             }
+            if (File.Exists(ZProxy2FilePath))
+            {
+                argumentsZProxy2.Add(ZProxy2FilePath);
+            }
 
             if (File.Exists(CookiePreparePath))
             {
@@ -443,6 +452,9 @@ namespace GetCookieFBTool
                         break;
                     case "13":
                         this.POCWanProxyMode.Checked = true;
+                        break;
+                    case "14":
+                        this.ZProxy2Mode.Checked = true;
                         break;
                 }
                 this.TimeUpdateProxyUD.Value = Int32.Parse(setting[6]);
@@ -822,7 +834,6 @@ namespace GetCookieFBTool
 
         void getProxy()
         {
-
             object ObjectProxy = new List<object>();
             switch (ProxyInstances.type)
             {
@@ -865,6 +876,9 @@ namespace GetCookieFBTool
                 case 13:
                     ObjectProxy = argumentsPOCWanProxy;
                     break;
+                case 14:
+                    ObjectProxy = argumentsZProxy2;
+                    break;
             }
             if (ObjectProxy == null)
             {
@@ -889,7 +903,7 @@ namespace GetCookieFBTool
             if (ProxyInstances.type == 0 || ProxyInstances.type == 1 || ProxyInstances.type == 4
                 || ProxyInstances.type == 5 || ProxyInstances.type == 7 || ProxyInstances.type == 8
                 || ProxyInstances.type == 9 || ProxyInstances.type == 10 || ProxyInstances.type == 11 || ProxyInstances.type == 12
-                || ProxyInstances.type == 13)
+                || ProxyInstances.type == 13 || ProxyInstances.type == 14)
             {
                 HashSet<string> hashSet = new HashSet<string>();
                 try
@@ -922,11 +936,13 @@ namespace GetCookieFBTool
                         ProxyInstances.MultiThrs.Run(new Action<string>(CoreProxy.Init_ShopLikeProxy));
                     else if (ProxyInstances.type == 13)
                         ProxyInstances.MultiThrs.Run(new Action<string>(CoreProxy.Init_POCWanProxy));
+                    else if (ProxyInstances.type == 14)
+                        ProxyInstances.MultiThrs.Run(new Action<string>(CoreProxy.Init_ZProxy2));
 
                     while (ProxyInstances.MultiThrs.IsWorking)
                     {
                         m_oWorker.ReportProgress(0, ProxyInstances.Http);
-                        Thread.Sleep(2 * 1000);
+                        Thread.Sleep(1 * 1000);
                     }
 
                 }
@@ -1018,17 +1034,6 @@ namespace GetCookieFBTool
                 var beginTimestamp = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
                 while (FacebookInstances.MultiThrs.IsWorking)
                 {
-                    //clear tiến trình leak của chrome driver
-                    //var currentTimeStamp = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
-                    //if (currentTimeStamp - beginTimestamp >= (int)this.TimeRefreshUD.Value * 60 * 1000)
-                    //{
-                    //    //FacebookInstances.MultiThrs.Pause();
-                    //    //Thread.Sleep(30 * 1000);
-                    //    ProcessHelper.KillAllProcessTree("chromedriver");
-                    //    Thread.Sleep(30 * 1000);
-                    //    //FacebookInstances.MultiThrs.Resume();
-                    //}
-
                     while (FacebookInstances.dataSuccess.Count > 0)
                     {
                         string sLine = "";
@@ -1087,19 +1092,19 @@ namespace GetCookieFBTool
                             if (ProxyInstances.type == 0 || ProxyInstances.type == 1 || ProxyInstances.type == 4
                                 || ProxyInstances.type == 5 || ProxyInstances.type == 7 || ProxyInstances.type == 8
                                 || ProxyInstances.type == 9 || ProxyInstances.type == 10 || ProxyInstances.type == 11
-                                || ProxyInstances.type == 12 || ProxyInstances.type == 13)
+                                || ProxyInstances.type == 12 || ProxyInstances.type == 13 || ProxyInstances.type == 14)
                             {
-                                Thread.Sleep(15 * 1000);
-                                getProxy();
+                                Thread.Sleep(60 * 1000);
+                                if(stopCmd == false)
+                                    getProxy();
                             }
                         }
                     }
 
                     m_oWorker.ReportProgress(1);
                     m_oWorker.ReportProgress(0, ProxyInstances.Http);
-                    Thread.Sleep(60 * 1000); Thread.Sleep(200);
+                    Thread.Sleep(200);
                 }
-                return;
             }
             catch (Exception ex)
             {
@@ -1161,7 +1166,7 @@ namespace GetCookieFBTool
         }
         private void startBtn_Click_1(object sender, EventArgs e)
         {
-
+            IPSTbox.Text = AddIP();
             if (requestMBasicCBox.Checked == true)
             {
                 FacebookInstances.requerstMBasic = true;
@@ -1254,6 +1259,8 @@ namespace GetCookieFBTool
                 ProxyInstances.type = 12;
             else if (this.POCWanProxyMode.Checked)
                 ProxyInstances.type = 13;
+            else if (this.ZProxy2Mode.Checked)
+                ProxyInstances.type = 14;
 
             if (addExtensionCBox.Checked)
             {
@@ -1289,78 +1296,90 @@ namespace GetCookieFBTool
 
             //int.TryParse(this.threadCountNumUD.Text.ToString(), out FacebookInstances.ThrsCount)
             ProxyInstances.timeUpdate = (int)this.TimeUpdateProxyUD.Value * 60 * 1000;
-            if (!m_oWorker.IsBusy)
+            if (!m_oWorker.IsBusy && !statusWorker.IsBusy)
             {
                 stopCmd = false;
                 m_oWorker.RunWorkerAsync();
                 statusWorker.RunWorkerAsync();
             }
+            else
+            {
+                MessageBox.Show("Chờ chút, chương trình chưa giải phóng xong");
+            }
         }
 
         void statusWorkerDowork(object sender, DoWorkEventArgs e)
         {
-            while (m_oWorker.IsBusy)
+            try
             {
-                if (runTime % 3600 == 0)
+                while (m_oWorker.IsBusy)
                 {
-                    var value = doneInHour;
-                    statusWorker.ReportProgress(1, value);
-                    doneInHour = 0;
-                    Thread.Sleep(200);
-                    value = lostCookiesInHour;
-                    statusWorker.ReportProgress(2, value);
-                    lostCookiesInHour = 0;
-                    Thread.Sleep(200);
-                    value = checkpointInHour;
-                    statusWorker.ReportProgress(3, value);
-                    checkpointInHour = 0;
-                    Thread.Sleep(200);
-                    value = spamInHour;
-                    statusWorker.ReportProgress(4, value);
-                    spamInHour = 0;
-                    Thread.Sleep(200);
-                    value = errorInHour;
-                    statusWorker.ReportProgress(5, value);
-                    errorInHour = 0;
-                }
+                    if (runTime % 3600 == 0)
+                    {
+                        var value = doneInHour;
+                        statusWorker.ReportProgress(1, value);
+                        doneInHour = 0;
+                        Thread.Sleep(200);
+                        value = lostCookiesInHour;
+                        statusWorker.ReportProgress(2, value);
+                        lostCookiesInHour = 0;
+                        Thread.Sleep(200);
+                        value = checkpointInHour;
+                        statusWorker.ReportProgress(3, value);
+                        checkpointInHour = 0;
+                        Thread.Sleep(200);
+                        value = spamInHour;
+                        statusWorker.ReportProgress(4, value);
+                        spamInHour = 0;
+                        Thread.Sleep(200);
+                        value = errorInHour;
+                        statusWorker.ReportProgress(5, value);
+                        errorInHour = 0;
+                    }
 
-                Thread.Sleep(200);
+                    Thread.Sleep(200);
+                }
             }
+            catch { }
         }
 
         void statusWorkerProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            if (e.ProgressPercentage == 1)
+            try
             {
-                success1HourTBox.Text = e.UserState.ToString();
+                if (e.ProgressPercentage == 1)
+                {
+                    success1HourTBox.Text = e.UserState.ToString();
+                }
+                if (e.ProgressPercentage == 2)
+                {
+                    lost1HourTBox.Text = e.UserState.ToString();
+                }
+                if (e.ProgressPercentage == 3)
+                {
+                    cp1HourTBox.Text = e.UserState.ToString();
+                }
+                if (e.ProgressPercentage == 4)
+                {
+                    spam1HourTBox.Text = e.UserState.ToString();
+                }
+                if (e.ProgressPercentage == 5)
+                {
+                    error1HourTBox.Text = e.UserState.ToString();
+                }
             }
-            if (e.ProgressPercentage == 2)
-            {
-                lost1HourTBox.Text = e.UserState.ToString();
-            }
-            if (e.ProgressPercentage == 3)
-            {
-                cp1HourTBox.Text = e.UserState.ToString();
-            }
-            if (e.ProgressPercentage == 4)
-            {
-                spam1HourTBox.Text = e.UserState.ToString();
-            }
-            if (e.ProgressPercentage == 5)
-            {
-                error1HourTBox.Text = e.UserState.ToString();
-            }
+            catch { }
         }
         void statusWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            this.startBtn.Enabled = true;
+            this.stopBtn.Enabled = true;
         }
 
 
         private void stopBtn_Click_1(object sender, EventArgs e)
         {
-            timer1.Stop();
             runTime = 0;
-            this.startBtn.Enabled = true;
             this.clearBackupBtn.Enabled = true;
             try
             {
@@ -1378,11 +1397,10 @@ namespace GetCookieFBTool
                 }
                 m_oWorker.CancelAsync();
                 m_oWorker.Dispose();
-                //MessageBox.Show(this, "DỪNG THÀNH CÔNG");
-                startBtn.Enabled = true;
+                ProcessHelper.KillAllProcessTree("chromedriver");
             }
             catch { }
-            ProcessHelper.KillAllProcessTree("chromedriver");
+            
         }
 
         private void showAllModeRB_CheckedChanged(object sender, EventArgs e)
@@ -1484,6 +1502,10 @@ namespace GetCookieFBTool
                 else if (this.POCWanProxyMode.Checked)
                 {
                     chooseModeProxy = "13";
+                }
+                else if (this.ZProxy2Mode.Checked)
+                {
+                    chooseModeProxy = "14";
                 }
 
                 var TimeUpdate = this.TimeUpdateProxyUD.Value.ToString();
@@ -1672,6 +1694,41 @@ namespace GetCookieFBTool
         {
             runTime += 1;
             timeLabel.Text = TimeSpan.FromSeconds(runTime).ToString("hh':'mm':'ss");
+        }
+
+
+        public static string AddIP()
+        {
+            try
+            {
+                ChromeDriverService service = ChromeDriverService.CreateDefaultService();
+                service.HideCommandPromptWindow = true;
+                ChromeDriver driver = null;
+                var options = new ChromeOptions();
+                options.AddArgument("--window-size=400,800");
+                //options.AddArgument("--headless");
+                options.AddArgument("ignore-certificate-errors");
+
+                options.AddExcludedArgument("enable-automation");
+                options.AddAdditionalCapability("useAutomationExtension", false);
+                options.AddArgument("--disable-web-security");
+                options.AddArgument("--disable-blink-features=AutomationControlled");
+                options.AddArgument("--no-sandbox");
+                options.AddArgument("--start-maximized");
+                options.AddUserProfilePreference("credentials_enable_service", false);
+                options.AddUserProfilePreference("profile.password_manager_enabled", false);
+                driver = new ChromeDriver(service, options);
+                driver.Navigate().GoToUrl("https://ipinfo.io/ip");
+                Thread.Sleep(2 * 1000);
+                var ip = driver.FindElement(By.TagName("body")).Text;
+                driver.Close();
+                driver.Quit();
+                return ip;
+            }
+            catch
+            {
+                return "";
+            }
         }
     }
 }

@@ -99,7 +99,7 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                 else
                 {
                     
-                    dataError.Enqueue(sLine.Replace('\n', ' ') + "|" + status);
+                    dataError.Enqueue(sLine.Replace('\n', ' ') + "|" + status.Replace('\n', ' '));
                     //File.AppendAllText(FS.sFileExportError, sLine + Environment.NewLine);
                 }
             }
