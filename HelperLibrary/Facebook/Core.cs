@@ -464,7 +464,10 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                         foreach (var cookie in lsCookies)
                         {
                             if (cookie.Name == "c_user" || cookie.Name == "xs" || cookie.Name == "wd" ||
-                                cookie.Name == "datr" || cookie.Name == "sb" || cookie.Name == "fr")
+                                cookie.Name == "datr" || cookie.Name == "sb" || cookie.Name == "fr" ||
+                                cookie.Name == "presence" || cookie.Name == "m_page_voice" || cookie.Name == "referer" ||
+                                cookie.Name == "xs" || cookie.Name == "wd" || cookie.Name == "m_pixel_ratio" ||
+                                cookie.Name == "locale" || cookie.Name == "datr")
                             {
                                 cookies += cookie.ToString().Split(';')[0] + ";";
                             }
@@ -480,7 +483,10 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                         foreach (var cookie in lsCookies)
                         {
                             if (cookie.Name == "c_user" || cookie.Name == "xs" || cookie.Name == "wd" ||
-                                cookie.Name == "datr" || cookie.Name == "sb" || cookie.Name == "fr")
+                                cookie.Name == "datr" || cookie.Name == "sb" || cookie.Name == "fr" ||
+                                cookie.Name == "presence" || cookie.Name == "m_page_voice" || cookie.Name == "referer" ||
+                                cookie.Name == "xs" || cookie.Name == "wd" || cookie.Name == "m_pixel_ratio" ||
+                                cookie.Name == "locale" || cookie.Name == "datr")
                             {
                                 cookies += cookie.ToString().Split(';')[0] + ";";
                             }
@@ -569,7 +575,10 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                         foreach (var cookie in lsCookies)
                         {
                             if (cookie.Name == "c_user" || cookie.Name == "xs" || cookie.Name == "wd" ||
-                                cookie.Name == "datr" || cookie.Name == "sb" || cookie.Name == "fr")
+                                cookie.Name == "datr" || cookie.Name == "sb" || cookie.Name == "fr" ||
+                                cookie.Name == "presence" || cookie.Name == "m_page_voice" || cookie.Name == "referer" ||
+                                cookie.Name == "xs" || cookie.Name == "wd" || cookie.Name == "m_pixel_ratio" ||
+                                cookie.Name == "locale" || cookie.Name == "datr")
                             {
                                 cookies += cookie.ToString().Split(';')[0] + ";";
                             }
