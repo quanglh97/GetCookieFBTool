@@ -11,6 +11,8 @@ namespace GetCookieFBTool.HelperLibrary
         public string userName;
         public string pass;
         public string key2fa;
+        public string locate;
+        public string locateNew;
 
         public Account()
         {
@@ -25,6 +27,8 @@ namespace GetCookieFBTool.HelperLibrary
                 this.pass = elementAccount[1].Trim();
                 if (elementAccount.Length > 2)
                     this.key2fa = elementAccount[2].Trim();
+                if (elementAccount.Length > 3)
+                    this.locate = elementAccount[3].Trim();
             }
             catch
             {

@@ -29,6 +29,8 @@ namespace GetCookieFBTool.HelperLibrary
         public string token { get; set; }
 
         public string userAgent { get; set; }
+        public string loacate { get; set; }
+        public string newLocate { get; set; }
 
 
         public dgvEventArgs(Account newacc,string status, string cookies, string token, string userAgent)
@@ -38,6 +40,8 @@ namespace GetCookieFBTool.HelperLibrary
             this.cookies = cookies;
             this.token = token;
             this.userAgent = userAgent;
+            this.loacate = newacc.locate;
+            this.newLocate = newacc.locateNew;
 
         }
     }

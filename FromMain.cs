@@ -38,6 +38,8 @@ namespace GetCookieFBTool
         public static int checkpoint = 0;
         public static int spam = 0;
 
+
+
         public static int doneInHour = 0;
         public static int errorInHour = 0;
         public static int lostCookiesInHour = 0;
@@ -46,6 +48,9 @@ namespace GetCookieFBTool
 
         public static bool isNotifyKey = false;
         public static bool isAddLs = false;
+        public static int timeWait2ChangeIP = 5000 * 60;
+
+
         //public static long beginTimestamp = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
         //public static long currentTimeStamp = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
 
@@ -548,6 +553,15 @@ namespace GetCookieFBTool
                 }
 
                 urlCustom.Text = "";
+
+                if (setting[17] == "0")
+                {
+                    this.checkLocateCBox.Checked = false;
+                }
+                else
+                {
+                    this.checkLocateCBox.Checked = true;
+                }
             }
         }
 
@@ -605,7 +619,7 @@ namespace GetCookieFBTool
                 }
             }
 
-            dtListResultOTP.Rows.Insert(nIndex, nIndex + 1, e.status, e.InfoAccount.userName, e.InfoAccount.pass, e.cookies, e.token, e.userAgent);
+            dtListResultOTP.Rows.Insert(nIndex, nIndex + 1, e.status, e.InfoAccount.userName, e.InfoAccount.pass, e.cookies, e.token, e.userAgent, e.loacate, e.newLocate);
             dtListResultOTP.Rows[nIndex].DefaultCellStyle.ForeColor = Color.Red;
             nIndex++;
             if (e.status == "success" || e.status == "no-veri")
@@ -834,6 +848,7 @@ namespace GetCookieFBTool
 
         void getProxy()
         {
+            ProcessHelper.KillAllProcessTree("chromedriver");
             object ObjectProxy = new List<object>();
             switch (ProxyInstances.type)
             {
@@ -979,6 +994,14 @@ namespace GetCookieFBTool
         {
             try
             {
+                if (NoneProxyMode.Checked)
+                {
+                    Thread thread = new Thread(() => WaitChangeIP.Wait2ChangeIP(timeWait2ChangeIP, stopCmd))
+                    {
+                        IsBackground = true,
+                    };
+                    thread.Start();
+                }
 
                 if (NoneProxyMode.Checked == false)
                 {
@@ -1038,7 +1061,7 @@ namespace GetCookieFBTool
                     {
                         string sLine = "";
                         FacebookInstances.dataSuccess.TryDequeue(out sLine);
-                        File.AppendAllText(FS.sFileExportSuccess, sLine + Environment.NewLine);
+                        File.AppendAllText(FS.sFileExportSuccess+ $"{DateTime.Now.Day}_{DateTime.Now.Month}_{DateTime.Now.Year}.txt", sLine + Environment.NewLine);
                     }
                     while (FacebookInstances.dataCookiePre.Count > 0)
                     {
@@ -1051,7 +1074,7 @@ namespace GetCookieFBTool
                     {
                         string sLine = "";
                         FacebookInstances.dataNoveri.TryDequeue(out sLine);
-                        File.AppendAllText(FS.sFileExportSuccess, sLine + Environment.NewLine);
+                        File.AppendAllText(FS.sFileExportSuccess+ $"{DateTime.Now.Day}_{DateTime.Now.Month}_{DateTime.Now.Year}.txt", sLine + Environment.NewLine);
                     }
                     while (FacebookInstances.dataError.Count > 0)
                     {
@@ -1171,6 +1194,12 @@ namespace GetCookieFBTool
             {
                 FacebookInstances.requerstMBasic = true;
             }
+
+            if(checkLocateCBox.Checked == true)
+            {
+                FacebookInstances.checkLocate = true;
+            }
+
             timer1.Start();
             
             if (urlRandom.Checked)
@@ -1266,6 +1295,9 @@ namespace GetCookieFBTool
             {
                 FacebookInstances.addEx = true;
             }
+
+            timeWait2ChangeIP = (int)numericUpDownChangeIP.Value*60*1000;
+
 
             // add nThread
             if (!int.TryParse(this.threadCountNumUD.Text.ToString(), out FacebookInstances.ThrsCount))
@@ -1564,12 +1596,17 @@ namespace GetCookieFBTool
                 {
                     accPre = "1";
                 }
+                var checkLocate = "0";
+                if (checkLocateCBox.Checked)
+                {
+                    checkLocate = "1";
+                }
 
                 var url = urlCustom.Text == null ? "": urlCustom.Text;
                 var lineSetting = threadCount + "|" + delayTypingLevel + "|" + typeAcc + "|" + modeRun + "|"
                     + ProxySP + "|" + chooseModeProxy + "|" + TimeUpdate + "|" + TimeRefresh + "|" + fakeUserAgent
                     + "|" + linkFix + "|" + accIndex + "|" + ips + "|" + pageLoadTime + "|" + checkIP + "|" + addEx
-                    + "|" + urlMode + "|" + url + accPre;
+                    + "|" + urlMode + "|" + url + accPre + "|" + checkLocate;
                 var settingPath = AppDomain.CurrentDomain.BaseDirectory + "data//" + "Setting.txt";
                 File.WriteAllText(settingPath, lineSetting);
             }

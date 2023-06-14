@@ -24,6 +24,9 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
         public static bool addEx = false;
         public static bool requerstMBasic = false;
 
+        public static bool waitChangeIP = false;
+        public static bool checkLocate = false;
+
         public static int maxThread = 100;
         public static int urlType = 1;
         public static string urlCustom = "";
@@ -67,7 +70,9 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
 
                 newAccountAdded((object)null, new dgvEventArgs(newacc, status, cookies, token, userAgent));
                 // save to file
-                string sLine =  newacc.userName + "|" + newacc.pass + "|" + obj.cookies + "|" + obj.token + "|" + obj.userAgent +"|" +
+                string sLine =  newacc.userName + "|" + newacc.pass + "|" + obj.cookies + "|" + obj.token + "|" + newacc.key2fa + "|" +
+                    newacc.locate + "|" + newacc.locateNew + "|"+
+                    obj.userAgent + "|" +
                     DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
                 if (status == "success")
                     dataSuccess.Enqueue(sLine);
@@ -95,7 +100,7 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                 else if(status == "no-veri")
                 {
                     dataNoveri.Enqueue(sLine + "|No-verify");
-                }
+                }    
                 else
                 {
                     

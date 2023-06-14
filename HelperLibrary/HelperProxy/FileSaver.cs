@@ -50,7 +50,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
 
             this.subFolderPath = AppDomain.CurrentDomain.BaseDirectory + "Result\\";
 
-            sFileExportSuccess += this.subFolderPath + "\\SAVE_OUT_PUT_SUCCESS.txt";
+            sFileExportSuccess += this.subFolderPath + $"\\SAVE_OUT_PUT_SUCCESS_";
             sFileExportError += this.subFolderPath + "\\SAVE_OUT_PUT_ERROR.txt";
             sFileExportCheckPoint += this.subFolderPath + "\\SAVE_OUT_PUT_CHECKPOINT.txt";
             sFileExportLostCookies += this.subFolderPath + "\\SAVE_OUT_PUT_LOSTCOOKIES.txt";

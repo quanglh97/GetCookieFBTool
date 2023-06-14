@@ -114,6 +114,9 @@
     <Compile Include="HelperLibrary\Account.cs" />
     <Compile Include="HelperLibrary\dgvEventArgs.cs" />
     <Compile Include="HelperLibrary\Facebook\Core.cs" />
+    <Compile Include="HelperLibrary\Facebook\FacebookData.cs" />
+    <Compile Include="HelperLibrary\Facebook\Login.cs" />
+    <Compile Include="HelperLibrary\Facebook\Request.cs" />
     <Compile Include="HelperLibrary\HelperProxy\ChangeIPHelper.cs" />
     <Compile Include="HelperLibrary\Facebook\FacebookInstances.cs" />
     <Compile Include="HelperLibrary\FileLoader.cs" />
@@ -125,6 +128,7 @@
     <Compile Include="HelperLibrary\Statistic.cs" />
     <Compile Include="HelperLibrary\UpdateChromeDriver.cs" />
     <Compile Include="HelperLibrary\HelperProxy\MyProxyChecker.cs" />
+    <Compile Include="HelperLibrary\WaitChangeIP.cs" />
     <Compile Include="ProcessHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
