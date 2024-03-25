@@ -36,12 +36,12 @@ namespace GetCookieFBTool.HelperLibrary
         public dgvEventArgs(Account newacc,string status, string cookies, string token, string userAgent)
         {
             this.InfoAccount = newacc;
-            this.status = status;
-            this.cookies = cookies;
-            this.token = token;
-            this.userAgent = userAgent;
-            this.loacate = newacc.locate;
-            this.newLocate = newacc.locateNew;
+            this.status = status == null ? "" : status;
+            this.cookies = cookies == null ? "" : cookies;
+            this.token = token == null? "": token;
+            this.userAgent = userAgent == null ? "" : userAgent;
+            this.loacate = newacc.locate == null ? "" : newacc.locate;
+            this.newLocate = newacc.locateNew == null ? "" : newacc.locateNew;
 
         }
     }

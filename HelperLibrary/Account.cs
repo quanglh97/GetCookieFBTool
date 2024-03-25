@@ -26,7 +26,11 @@ namespace GetCookieFBTool.HelperLibrary
                 this.userName = elementAccount[0].Trim();
                 this.pass = elementAccount[1].Trim();
                 if (elementAccount.Length > 2)
+                {
                     this.key2fa = elementAccount[2].Trim();
+                    this.key2fa = this.key2fa.Replace(" ", "");
+                }
+                    
                 if (elementAccount.Length > 3)
                     this.locate = elementAccount[3].Trim();
             }

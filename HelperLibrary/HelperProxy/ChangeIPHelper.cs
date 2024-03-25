@@ -123,34 +123,42 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
 
         public static string GetProxyTinsoft(string tinsoftKey)
         {
-            try
+            for (int i = 0; i < 3; i++)
             {
-                RestClient client = null;
-                if (ProxyInstances.location.locationTinsoft == -1)
-                    client = new RestClient("http://proxy.tinsoftsv.com/api/changeProxy.php?key=" + tinsoftKey+ "&location=0"); //TL32ysqjlmjBXSj9cB3DO1DF66QYQkDhY6NyLM
-                else
+                try
                 {
-                    client = new RestClient("http://proxy.tinsoftsv.com/api/changeProxy.php?key=" + tinsoftKey + "&location=" + ProxyInstances.location.locationTinsoft.ToString());
+                    RestClient client = null;
+                    if (ProxyInstances.location.locationTinsoft == -1)
+                        client = new RestClient("http://proxy.tinsoftsv.com/api/changeProxy.php?key=" + tinsoftKey + "&location=0"); //TL32ysqjlmjBXSj9cB3DO1DF66QYQkDhY6NyLM
+                    else
+                    {
+                        client = new RestClient("http://proxy.tinsoftsv.com/api/changeProxy.php?key=" + tinsoftKey + "&location=" + ProxyInstances.location.locationTinsoft.ToString());
+                    }
+                    client.Timeout = -1;
+                    var request = new RestRequest(Method.GET);
+                    IRestResponse response = client.Execute(request);
+
+                    JObject jObject = JObject.Parse(response.Content);
+
+                    if (jObject["success"].ToString().Contains("alse"))
+                    {
+                        if (jObject["success"].ToString().Contains("proxy not found!"))
+                        {
+                            Thread.Sleep(10000);
+                            continue;
+                        }
+                        return GetCurrentProxyTinsoft(tinsoftKey);
+                    }
+
+
+                    return jObject["proxy"].ToString();
                 }
-                client.Timeout = -1;
-                var request = new RestRequest(Method.GET);
-                IRestResponse response = client.Execute(request);
-
-                JObject jObject = JObject.Parse(response.Content);
-
-                if (jObject["success"].ToString().Contains("alse"))
+                catch (Exception ex)
                 {
-                    return GetCurrentProxyTinsoft(tinsoftKey);
+                    //MessageBox.Show("Get Proxy Tinsoft error: " + ex.Message, "Error");
                 }
-
-
-                return jObject["proxy"].ToString();
+                return "";
             }
-            catch (Exception ex)
-            {
-                //MessageBox.Show("Get Proxy Tinsoft error: " + ex.Message, "Error");
-            }
-
             return "";
         }
 

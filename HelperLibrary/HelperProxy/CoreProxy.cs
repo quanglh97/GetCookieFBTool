@@ -29,6 +29,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
             {
 
                 string new_proxy = ChangeIPHelper.GetIPTMProxy(key);
+                if (new_proxy == "") return;
                 if (new_proxy.Contains(":") && new_proxy.Split('.').Length >= 4)
                 {
                     if (FacebookInstances.checkIP)
@@ -53,6 +54,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
             {
 
                 string new_proxy = ChangeIPHelper.GetProxyTinsoft(key);
+                if (new_proxy == "") return;
                 if (FacebookInstances.checkIP)
                 {
                     if (!MyProxyChecker.HttpChecking(new_proxy))
@@ -73,6 +75,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
             if (key != null)
             {
                 string new_proxy = ChangeIPHelper.ChangeTinProxy(key);
+                if (new_proxy == "") return;
                 if (FacebookInstances.checkIP)
                 {
                     if (!MyProxyChecker.HttpChecking(new_proxy))
@@ -93,6 +96,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
             if (key != null)
             {
                 string new_proxy = ChangeIPHelper.ChangeMinProxy(key);
+                if (new_proxy == "") return;
                 if (FacebookInstances.checkIP)
                 {
                     if (!MyProxyChecker.HttpChecking(new_proxy))
@@ -113,6 +117,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
             if (key != null)
             {
                 string new_proxy = ChangeIPHelper.ChangeProxyMMONet(key, ips);
+                if (new_proxy == "") return;
                 //if (FacebookInstances.checkIP)
                 //{
                 //    if (!PingHost(new_proxy))
@@ -134,13 +139,14 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
             if (key != null)
             {
                 var newProxy = ChangeIPHelper.ChangeProxyMobie(key);
+                if (newProxy == "") return;
                 //if (FacebookInstances.checkIP)
                 //{
                 ////if (!PingHost(newProxy))
                 ////{
                 ////    return;
                 ////}
-                
+
                 //    //try
                 //    //{
                 //    //    var url = $"http://tet.hoanggiaminh.shop/proxy_check?proxy={newProxy}";
@@ -171,6 +177,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
             if (key != null)
             {
                 var newProxy = ChangeIPHelper.ChangePOCProxy(key);
+                if (newProxy == "") return;
                 if (FacebookInstances.checkIP)
                 {
                     //if (!PingHost(newProxy))
@@ -214,6 +221,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
             if (key != null)
             {
                 var newProxy = ChangeIPHelper.ChangePOCWanProxy(key);
+                if (newProxy == "") return;
                 if (newProxy != null)
                 {
                     if (FacebookInstances.checkIP)
@@ -254,6 +262,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
             if (key != null)
             {
                 var newProxy = ChangeIPHelper.ChangeZProxy(key);
+                if (newProxy == "") return;
                 //if (FacebookInstances.checkIP)
                 //{
                 //    if (!PingHost(newProxy))
@@ -276,6 +285,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
             if (key != null)
             {
                 var newProxy = ChangeIPHelper.ChangeZProxy2(key);
+                if (newProxy == "") return;
                 if (FacebookInstances.checkIP)
                 {
                     if (!MyProxyChecker.Socks5Checking(newProxy))
@@ -298,6 +308,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
             if (key != null)
             {
                 var newProxy = ChangeIPHelper.ChangeShopLikeProxy(key);
+                if (newProxy == "") return;
                 if (newProxy != null)
                 {
                     if (FacebookInstances.checkIP)
@@ -322,6 +333,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
             if (key != null)
             {
                 var newProxy = ChangeIPHelper.ChangeNo1Proxy(key);
+                if (newProxy == "") return;
                 if (newProxy.Contains(":") && newProxy.Split('.').Length >= 3)
                 {
                     ProxyInstances.Http.Enqueue(newProxy);

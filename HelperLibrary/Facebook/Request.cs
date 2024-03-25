@@ -21,7 +21,15 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                 KeepAlive = true,
                 AllowAutoRedirect = true,
                 Cookies = new CookieDictionary(false),
-                UserAgent = userAgent
+                UserAgent = userAgent,
+
+                ConnectTimeout = 5000,
+
+                KeepAliveTimeout = 5000,
+                ReadWriteTimeout = 5000
+
+
+
             };
             this.request.AddHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
             this.request.AddHeader("Accept-Language", "en-US,en;q=0.9");
@@ -30,6 +38,54 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
             {
                 this.AddCookie(cookie);
             }
+            bool flag3 = proxy != "";
+            if (flag3)
+            {
+                switch (proxy.Split(new char[]
+                {
+                    ':'
+                }).Count<string>())
+                {
+                    case 1:
+                        this.request.Proxy = Socks5ProxyClient.Parse("127.0.0.1:" + proxy);
+                        break;
+                    case 2:
+                        {
+                            bool flag4 = typeProxy == 0;
+                            if (flag4)
+                            {
+                                this.request.Proxy = HttpProxyClient.Parse(proxy);
+                                this.request.Proxy.ConnectTimeout = 5000;
+                            }
+                            else
+                            {
+                                this.request.Proxy = Socks5ProxyClient.Parse(proxy);
+                                this.request.Proxy.ConnectTimeout = 5000;
+                            }
+                            break;
+                        }
+                    case 4:
+                        this.request.Proxy = new HttpProxyClient(proxy.Split(new char[]
+                        {
+                        ':'
+                        })[0], Convert.ToInt32(proxy.Split(new char[]
+                        {
+                        ':'
+                        })[1]), proxy.Split(new char[]
+                        {
+                        ':'
+                        })[2], proxy.Split(new char[]
+                        {
+                        ':'
+                        })[3]);
+                        this.request.Proxy.ConnectTimeout = 5000;
+                        break;
+                }
+            }
+        }
+
+        public void AddProxy(string proxy = "", int typeProxy = 0)
+        {
             bool flag3 = proxy != "";
             if (flag3)
             {
@@ -72,6 +128,7 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                 }
             }
         }
+
         public void Detele()
         {
             //this.request.
@@ -117,9 +174,9 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
         public void AddCookie(string cookie)
         {
             string[] array = cookie.Split(new char[]
-            {
+              {
                 ';'
-            });
+              });
             foreach (string text in array)
             {
                 string[] array3 = text.Split(new char[]
@@ -168,6 +225,6 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
         }
         public string Uri() => request.Address.AbsoluteUri;
 
-        private HttpRequest request;
+        public HttpRequest request;
     }
 }

@@ -3,6 +3,7 @@ using GetCookieFBTool.HelperLibrary.Facebook;
 using GetCookieFBTool.HelperLibrary.HelperProxy;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.DevTools;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -38,7 +39,9 @@ namespace GetCookieFBTool
         public static int checkpoint = 0;
         public static int spam = 0;
 
+        
 
+        public static string accCbox = "";
 
         public static int doneInHour = 0;
         public static int errorInHour = 0;
@@ -190,6 +193,7 @@ namespace GetCookieFBTool
                     default:
                         if (!FacebookInstances.MultiThrs.IsStopping)
                         {
+                            stopCmd = true;
                             FacebookInstances.MultiThrs.Cancel();
                             ProcessHelper.KillAllProcessTree("chromedriver");
                         }
@@ -271,6 +275,7 @@ namespace GetCookieFBTool
                 {
                     FacebookInstances.queueFakeUserAgent.Enqueue(userAgent);
                 }
+                FacebookInstances.lsFakeUserAgent = FacebookInstances.queueFakeUserAgent.ToList();
 
             }
 
@@ -283,11 +288,11 @@ namespace GetCookieFBTool
                 }
                 Random random = new Random();
                 int a1 = random.Next(1, 5000);
-                while(a1 > 0)
+                while (a1 > 0)
                 {
                     string acc = "";
                     FacebookInstances.queueAccPre.TryDequeue(out acc);
-                    if(acc != null && acc != "")
+                    if (acc != null && acc != "")
                         FacebookInstances.queueAccPre.Enqueue(acc);
                     a1--;
                 }
@@ -493,6 +498,9 @@ namespace GetCookieFBTool
                 }
 
 
+
+
+
                 listAccCbBox.SelectedIndex = Int32.Parse(listAccIndex) - 1;
                 var backupPath = AppDomain.CurrentDomain.BaseDirectory + "data//" + $"backup_{listAccIndex}.txt";
                 var accountPath = AppDomain.CurrentDomain.BaseDirectory + "data//" + $"Account_{listAccIndex}.txt";
@@ -542,6 +550,10 @@ namespace GetCookieFBTool
                 {
                     urlMFB.Checked = true;
                 }
+                else if (setting[15] == "5")
+                {
+                    url_Identify.Checked = true;
+                }
 
                 if (setting[16] == "0")
                 {
@@ -561,6 +573,88 @@ namespace GetCookieFBTool
                 else
                 {
                     this.checkLocateCBox.Checked = true;
+                }
+
+                if (setting[18] == "1")
+                {
+                    requestMBasicCBox.Checked = true;
+                    requestWWWCBox.Checked = false;
+                    requestWWWLoginCBox.Checked = false;
+                    requestLogin2CBox.Checked = false;
+                }
+                else if (setting[18] == "2")
+                {
+                    requestWWWCBox.Checked = true;
+                    requestMBasicCBox.Checked = false;
+                    requestWWWLoginCBox.Checked = false;
+                    requestLogin2CBox.Checked = false;
+
+                }
+                else if (setting[18] == "3")
+                {
+                    requestMBasicCBox.Checked = false;
+                    requestWWWCBox.Checked = false;
+                    requestWWWLoginCBox.Checked = true;
+                    requestLogin2CBox.Checked = false;
+                }
+                else if (setting[18] == "0")
+                {
+                    requestMBasicCBox.Checked = false;
+                    requestWWWCBox.Checked = false;
+                    requestWWWLoginCBox.Checked = false;
+                    requestLogin2CBox.Checked = false;
+                }
+                else if (setting[18] == "4")
+                {
+                    requestMBasicCBox.Checked = false;
+                    requestWWWCBox.Checked = false;
+                    requestWWWLoginCBox.Checked = false;
+                    requestLogin2CBox.Checked = true;
+                }
+
+                try
+                {
+                    if (setting[19] == "1")
+                    {
+                        randomCBox.Checked = true;
+                    }
+                    else
+                    {
+                        randomCBox.Checked = false;
+                    }
+                }
+                catch
+                {
+
+                }
+
+                try
+                {
+                    if (setting[20] == "1")
+                    {
+                        TimeUACBox.Checked = true;
+                    }
+                    else if(setting[21] == "1")
+                    {
+                        RealTimeUACBox.Checked = true;
+                    }
+                    else
+                    {
+                        NoTimeCBox.Checked = true;
+                    }
+                }
+                catch
+                {
+
+                }
+
+                try
+                {
+                    numericUpDownChangeIP.Value = Int32.Parse(setting[23]);
+                }
+                catch
+                {
+
                 }
             }
         }
@@ -588,16 +682,19 @@ namespace GetCookieFBTool
             }
         }
 
-
         private delegate void InvokeDelegate(dgvEventArgs e);
         private void Statistic_newAccountAdded(object sender, dgvEventArgs e)
         {
-            this.BeginInvoke(new InvokeDelegate(AddToGirdView), new object[] { e });
+            try
+            {
+                this.BeginInvoke(new InvokeDelegate(AddToGirdView), new object[] { e });
+            }
+            catch { }
         }
 
         private void AddToGirdView(dgvEventArgs e)
         {
-            if (e == null || e.InfoAccount == null)
+            if (e == null || e.InfoAccount == null || e.InfoAccount.pass == null || e.InfoAccount.userName == null)
             {
                 return;
             }
@@ -622,7 +719,7 @@ namespace GetCookieFBTool
             dtListResultOTP.Rows.Insert(nIndex, nIndex + 1, e.status, e.InfoAccount.userName, e.InfoAccount.pass, e.cookies, e.token, e.userAgent, e.loacate, e.newLocate);
             dtListResultOTP.Rows[nIndex].DefaultCellStyle.ForeColor = Color.Red;
             nIndex++;
-            if (e.status == "success" || e.status == "no-veri")
+            if (e.status.Contains("success") || e.status.Contains("no-veri"))
             {
                 done += 1;
                 this.doneTbox.Text = done.ToString();
@@ -632,7 +729,7 @@ namespace GetCookieFBTool
 
             }
 
-            else if (e.status == "lostCookies")
+            else if (e.status.Contains("lostCookies"))
             {
                 lostCookies += 1;
                 this.lostCookieTbox.Text = lostCookies.ToString();
@@ -643,7 +740,7 @@ namespace GetCookieFBTool
 
 
             }
-            else if (e.status == "checkpoint")
+            else if (e.status.Contains("checkpoint"))
             {
                 checkpoint += 1;
                 this.checkpointTBox.Text = checkpoint.ToString();
@@ -654,7 +751,7 @@ namespace GetCookieFBTool
 
 
             }
-            else if (e.status == "spam")
+            else if (e.status.Contains("spam"))
             {
                 spam += 1;
                 this.spamTBox.Text = spam.ToString();
@@ -675,6 +772,9 @@ namespace GetCookieFBTool
 
 
             }
+
+            dtListResultOTP.FirstDisplayedScrollingRowIndex = dtListResultOTP.Rows.Count - 1;
+
             //this.lbInfo.Visible = false;
             //this.btnFind.Visible = true;
         }
@@ -992,6 +1092,11 @@ namespace GetCookieFBTool
 
         void m_oWorker_DoWork(object sender, DoWorkEventArgs e)
         {
+            Thread ghiFile = new Thread(() => {
+                GhiFileBackUp();
+            });
+            ghiFile.Start();
+
             try
             {
                 if (NoneProxyMode.Checked)
@@ -1040,93 +1145,116 @@ namespace GetCookieFBTool
                     FacebookInstances.MultiThrs.ThreadCount = FacebookInstances.ThrsCount;
                 FacebookInstances.MultiThrs.delayTime = FacebookInstances.delayLevel;
 
-                //if (FacebookInstances.requerstMBasic)
-                //{
-                //    FacebookInstances.MultiThrs.Run(new Action<Account>(Core.requestMbasicLogin));
-                //}
-                //else
-                //{
-                if (FacebookInstances.modeRun == 0)
-                    FacebookInstances.MultiThrs.Run(new Action<Account>(Core.InitModeHide));
-                else if (FacebookInstances.modeRun == 1)
-                    FacebookInstances.MultiThrs.Run(new Action<Account>(Core.InitModeShowAll));
+                if (FacebookInstances.requerstMBasic)
+                {
+                    FacebookInstances.MultiThrs.Run(new Action<Account>(Core.InitMBasicRequest));
+                }
+                else if (FacebookInstances.requerstWWW || FacebookInstances.requerstWWWLogin)
+                {
+                    FacebookInstances.MultiThrs.Run(new Action<Account>(Core.InitWWWRequest));
+                }
+                else if (FacebookInstances.requerstLogin2)
+                {
+                    FacebookInstances.MultiThrs.Run(new Action<Account>(Core.InitRequestLogin2));
+                }
                 else
-                    FacebookInstances.MultiThrs.Run(new Action<Account>(Core.InitModeShowTaskbar));
-                // }
+                {
+                    if (FacebookInstances.modeRun == 0)
+                        FacebookInstances.MultiThrs.Run(new Action<Account>(Core.InitModeHide));
+                    else if (FacebookInstances.modeRun == 1)
+                        FacebookInstances.MultiThrs.Run(new Action<Account>(Core.InitModeShowAll));
+                    else
+                        FacebookInstances.MultiThrs.Run(new Action<Account>(Core.InitModeShowTaskbar));
+                }
 
                 var beginTimestamp = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
+
                 while (FacebookInstances.MultiThrs.IsWorking)
                 {
-                    while (FacebookInstances.dataSuccess.Count > 0)
+                    try
                     {
-                        string sLine = "";
-                        FacebookInstances.dataSuccess.TryDequeue(out sLine);
-                        File.AppendAllText(FS.sFileExportSuccess+ $"{DateTime.Now.Day}_{DateTime.Now.Month}_{DateTime.Now.Year}.txt", sLine + Environment.NewLine);
-                    }
-                    while (FacebookInstances.dataCookiePre.Count > 0)
-                    {
-                        string sLine = "";
-                        FacebookInstances.dataCookiePre.TryDequeue(out sLine);
-                        File.AppendAllText(FS.sFileCookiePre, sLine + Environment.NewLine);
-                    }
-
-                    while (FacebookInstances.dataNoveri.Count > 0)
-                    {
-                        string sLine = "";
-                        FacebookInstances.dataNoveri.TryDequeue(out sLine);
-                        File.AppendAllText(FS.sFileExportSuccess+ $"{DateTime.Now.Day}_{DateTime.Now.Month}_{DateTime.Now.Year}.txt", sLine + Environment.NewLine);
-                    }
-                    while (FacebookInstances.dataError.Count > 0)
-                    {
-                        string sLine = "";
-                        FacebookInstances.dataError.TryDequeue(out sLine);
-                        File.AppendAllText(FS.sFileExportError, sLine + Environment.NewLine);
-                    }
-                    while (FacebookInstances.dataCheckPoint.Count > 0)
-                    {
-                        string sLine = "";
-                        FacebookInstances.dataCheckPoint.TryDequeue(out sLine);
-                        File.AppendAllText(FS.sFileExportCheckPoint, sLine + Environment.NewLine);
-                    }
-                    while (FacebookInstances.dataLostCookies.Count > 0)
-                    {
-                        string sLine = "";
-                        FacebookInstances.dataLostCookies.TryDequeue(out sLine);
-                        File.AppendAllText(FS.sFileExportLostCookies, sLine + Environment.NewLine);
-                    }
-                    while (FacebookInstances.dataReCheck.Count > 0)
-                    {
-                        string sLine = "";
-                        FacebookInstances.dataReCheck.TryDequeue(out sLine);
-                        File.AppendAllText(FS.sFileExportRecheck, sLine + Environment.NewLine);
-                    }
-                    while (FacebookInstances.dataSpam.Count > 0)
-                    {
-                        string sLine = "";
-                        FacebookInstances.dataSpam.TryDequeue(out sLine);
-                        File.AppendAllText(FS.sFileExportRecheck, sLine + Environment.NewLine);
-                    }
-
-
-                    if (NoneProxyMode.Checked == false)
-                    {
-                        if (ProxyInstances.Http.Count == 0)
+                        while (FacebookInstances.dataSuccess.Count > 0)
                         {
-                            if (ProxyInstances.type == 0 || ProxyInstances.type == 1 || ProxyInstances.type == 4
-                                || ProxyInstances.type == 5 || ProxyInstances.type == 7 || ProxyInstances.type == 8
-                                || ProxyInstances.type == 9 || ProxyInstances.type == 10 || ProxyInstances.type == 11
-                                || ProxyInstances.type == 12 || ProxyInstances.type == 13 || ProxyInstances.type == 14)
+                            string sLine = "";
+                            FacebookInstances.dataSuccess.TryDequeue(out sLine);
+                            File.AppendAllText(FS.sFileExportSuccess + $"{DateTime.Now.Day}_{DateTime.Now.Month}_{DateTime.Now.Year}.txt", sLine + Environment.NewLine);
+                        }
+                        while (FacebookInstances.dataCookiePre.Count > 0)
+                        {
+                            string sLine = "";
+                            FacebookInstances.dataCookiePre.TryDequeue(out sLine);
+                            File.AppendAllText(FS.sFileCookiePre, sLine + Environment.NewLine);
+                        }
+
+                        while (FacebookInstances.dataNoveri.Count > 0)
+                        {
+                            string sLine = "";
+                            FacebookInstances.dataNoveri.TryDequeue(out sLine);
+                            File.AppendAllText(FS.sFileExportSuccess + $"{DateTime.Now.Day}_{DateTime.Now.Month}_{DateTime.Now.Year}.txt", sLine + Environment.NewLine);
+                        }
+                        while (FacebookInstances.dataError.Count > 0)
+                        {
+                            string sLine = "";
+                            FacebookInstances.dataError.TryDequeue(out sLine);
+                            File.AppendAllText(FS.sFileExportError, sLine + Environment.NewLine);
+                        }
+                        while (FacebookInstances.dataCheckPoint.Count > 0)
+                        {
+                            string sLine = "";
+                            FacebookInstances.dataCheckPoint.TryDequeue(out sLine);
+                            File.AppendAllText(FS.sFileExportCheckPoint, sLine + Environment.NewLine);
+                        }
+                        while (FacebookInstances.dataLostCookies.Count > 0)
+                        {
+                            string sLine = "";
+                            FacebookInstances.dataLostCookies.TryDequeue(out sLine);
+                            File.AppendAllText(FS.sFileExportLostCookies, sLine + Environment.NewLine);
+                        }
+                        while (FacebookInstances.dataReCheck.Count > 0)
+                        {
+                            string sLine = "";
+                            FacebookInstances.dataReCheck.TryDequeue(out sLine);
+                            File.AppendAllText(FS.sFileExportRecheck, sLine + Environment.NewLine);
+                        }
+                        while (FacebookInstances.dataSpam.Count > 0)
+                        {
+                            string sLine = "";
+                            FacebookInstances.dataSpam.TryDequeue(out sLine);
+                            File.AppendAllText(FS.sFileExportRecheck, sLine + Environment.NewLine);
+                        }
+
+                        if (NoneProxyMode.Checked == false)
+                        {
+                            if (ProxyInstances.Http.Count == 0)
                             {
-                                Thread.Sleep(60 * 1000);
-                                if(stopCmd == false)
-                                    getProxy();
+                                if (ProxyInstances.type == 0 || ProxyInstances.type == 1 || ProxyInstances.type == 4
+                                    || ProxyInstances.type == 5 || ProxyInstances.type == 7 || ProxyInstances.type == 8
+                                    || ProxyInstances.type == 9 || ProxyInstances.type == 10 || ProxyInstances.type == 11
+                                    || ProxyInstances.type == 12 || ProxyInstances.type == 13 || ProxyInstances.type == 14)
+                                {
+                                    if (stopCmd == false)
+                                    {
+                                        RunClosePort();
+                                        Thread.Sleep(20 * 1000);
+                                        getProxy();
+                                    }
+
+                                }
                             }
                         }
-                    }
 
-                    m_oWorker.ReportProgress(1);
-                    m_oWorker.ReportProgress(0, ProxyInstances.Http);
-                    Thread.Sleep(200);
+                        m_oWorker.ReportProgress(1);
+                        m_oWorker.ReportProgress(0, ProxyInstances.Http);
+                        Thread.Sleep(200);
+                    }
+                    catch (Exception ex)
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        sb.Append("check loop proxy: " + e);
+                        System.IO.File.AppendAllText("logComplete.txt", sb.ToString());
+                        sb.Clear();
+                        Thread.Sleep(20 * 1000);
+                    }
                 }
             }
             catch (Exception ex)
@@ -1149,10 +1277,10 @@ namespace GetCookieFBTool
                 //this.countProxyTBox.ForeColor = Color.Brown;
                 this.numBackupTB.Text = FacebookInstances.numRan.ToString();
 
-                var lineBackup = FacebookInstances.numRan.ToString();
-                string listAccIndex = listAccCbBox.SelectedItem.ToString();
-                var backupPath = AppDomain.CurrentDomain.BaseDirectory + "data//" + $"backup_{listAccIndex}.txt";
-                File.WriteAllText(backupPath, lineBackup);
+                //var lineBackup = FacebookInstances.numRan.ToString();
+                //string listAccIndex = listAccCbBox.SelectedItem.ToString();
+                //var backupPath = AppDomain.CurrentDomain.BaseDirectory + "data//" + $"backup_{listAccIndex}.txt";
+                //File.WriteAllText(backupPath, lineBackup);
 
             }
             else if (e.ProgressPercentage == 1)
@@ -1183,25 +1311,91 @@ namespace GetCookieFBTool
             string listAccIndex = listAccCbBox.SelectedItem.ToString();
             var backupPath = AppDomain.CurrentDomain.BaseDirectory + "data//" + $"backup_{listAccIndex}.txt";
             File.WriteAllText(backupPath, lineBackup);
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append("check complete: " + lineBackup);
+            File.AppendAllText("logComplete.txt", sb.ToString());
+            sb.Clear();
+
+            Environment.Exit(Environment.ExitCode);
+
             System.Windows.Forms.Application.Exit();
+
+
+
             //if (FacebookInstances.MultiThrs.queueAccs.Count == 0)
             //    MessageBox.Show(this, "CHẠY XONG !!!!");
         }
         private void startBtn_Click_1(object sender, EventArgs e)
         {
+            accCbox = listAccCbBox.SelectedItem.ToString();
+
             IPSTbox.Text = AddIP();
+
+            if (randomCBox.Checked)
+                FacebookInstances.randomWWW = true;
+            else
+                FacebookInstances.randomWWW = false;
+
             if (requestMBasicCBox.Checked == true)
             {
                 FacebookInstances.requerstMBasic = true;
+                FacebookInstances.requerstWWW = false;
+                FacebookInstances.requerstWWWLogin = false;
+                FacebookInstances.requerstLogin2 = false;
+            }
+            else
+            {
+                FacebookInstances.requerstMBasic = false;
             }
 
-            if(checkLocateCBox.Checked == true)
+            if (requestWWWCBox.Checked == true)
+            {
+                FacebookInstances.requerstMBasic = false;
+                FacebookInstances.requerstWWW = true;
+                FacebookInstances.requerstWWWLogin = false;
+                FacebookInstances.requerstLogin2 = false;
+            }
+            else
+            {
+                FacebookInstances.requerstWWW = false;
+            }
+
+            if (requestWWWLoginCBox.Checked == true)
+            {
+                FacebookInstances.requerstMBasic = false;
+                FacebookInstances.requerstWWW = false;
+                FacebookInstances.requerstWWWLogin = true;
+                FacebookInstances.requerstLogin2 = false;
+            }
+            else
+            {
+                FacebookInstances.requerstWWWLogin = false;
+            }
+
+            if (requestLogin2CBox.Checked == true)
+            {
+                FacebookInstances.requerstMBasic = false;
+                FacebookInstances.requerstWWW = false;
+                FacebookInstances.requerstWWWLogin = false;
+                FacebookInstances.requerstLogin2 = true;
+            }
+            else
+            {
+                FacebookInstances.requerstLogin2 = false;
+            }
+
+
+
+
+
+            if (checkLocateCBox.Checked == true)
             {
                 FacebookInstances.checkLocate = true;
             }
 
             timer1.Start();
-            
+
             if (urlRandom.Checked)
             {
                 FacebookInstances.urlType = 0;
@@ -1222,12 +1416,16 @@ namespace GetCookieFBTool
             {
                 FacebookInstances.urlType = 4;
             }
+            else if (url_Identify.Checked)
+            {
+                FacebookInstances.urlType = 5;
+            }
 
             FacebookInstances.urlCustom = urlCustom.Text;
 
             CoreProxy.ips = IPSTbox.Text;
             FacebookInstances.pageLoadTime = (int)pageLoadUD.Value;
-            FacebookInstances.linkFix = linkFixCBox.Text;
+            FacebookInstances.lsLinkFix = linkFixCBox.Text.Split('\n').ToList();
             this.startBtn.Enabled = false;
             this.clearBackupBtn.Enabled = false;
             if (this.CookieSpCB.Checked)
@@ -1296,7 +1494,27 @@ namespace GetCookieFBTool
                 FacebookInstances.addEx = true;
             }
 
-            timeWait2ChangeIP = (int)numericUpDownChangeIP.Value*60*1000;
+            timeWait2ChangeIP = (int)numericUpDownChangeIP.Value * 1000;
+
+
+            if (TimeUACBox.Checked)
+            {
+                FacebookInstances.timeUa = true;
+                FacebookInstances.timeRealUa = false;
+                FacebookInstances.noTimeUa = false;
+            }
+            else if (RealTimeUACBox.Checked)
+            {
+                FacebookInstances.timeUa = false;
+                FacebookInstances.timeRealUa = true;
+                FacebookInstances.noTimeUa = false;
+            }
+            else
+            {
+                FacebookInstances.timeUa = false;
+                FacebookInstances.timeRealUa = false;
+                FacebookInstances.noTimeUa = true;
+            }
 
 
             // add nThread
@@ -1327,7 +1545,7 @@ namespace GetCookieFBTool
             }
 
             //int.TryParse(this.threadCountNumUD.Text.ToString(), out FacebookInstances.ThrsCount)
-            ProxyInstances.timeUpdate = (int)this.TimeUpdateProxyUD.Value * 60 * 1000;
+            ProxyInstances.timeUpdate = (int)this.TimeUpdateProxyUD.Value * 1000;
             if (!m_oWorker.IsBusy && !statusWorker.IsBusy)
             {
                 stopCmd = false;
@@ -1432,7 +1650,7 @@ namespace GetCookieFBTool
                 ProcessHelper.KillAllProcessTree("chromedriver");
             }
             catch { }
-            
+
         }
 
         private void showAllModeRB_CheckedChanged(object sender, EventArgs e)
@@ -1462,8 +1680,6 @@ namespace GetCookieFBTool
                 var threadCount = this.threadCountNumUD.Value.ToString();
                 var delayTypingLevel = this.delayLevelUD.Value.ToString();
                 var typeAcc = this.typeAccTB.Text;
-
-
 
                 var modeRun = "0";
                 if (this.hideModeRB.Checked)
@@ -1591,6 +1807,10 @@ namespace GetCookieFBTool
                 {
                     urlMode = "4";
                 }
+                else if (url_Identify.Checked)
+                {
+                    urlMode = "5";
+                }
                 var accPre = "0";
                 if (accPreCBox.Checked)
                 {
@@ -1602,11 +1822,55 @@ namespace GetCookieFBTool
                     checkLocate = "1";
                 }
 
-                var url = urlCustom.Text == null ? "": urlCustom.Text;
+                var requestMBasic = "0";
+                if (requestMBasicCBox.Checked)
+                {
+                    requestMBasic = "1";
+                }
+                else if (requestWWWCBox.Checked)
+                {
+                    requestMBasic = "2";
+                }
+                else if (requestWWWLoginCBox.Checked)
+                {
+                    requestMBasic = "3";
+                }
+                else if (requestLogin2CBox.Checked)
+                {
+                    requestMBasic = "4";
+                }
+
+                var randomWWW = "0";
+                if (randomCBox.Checked)
+                {
+                    randomWWW = "1";
+                }
+                var timeUa = "0";
+                if (TimeUACBox.Checked)
+                {
+                    timeUa = "1";
+                }
+
+                var realTimeUa = "0";
+                if (RealTimeUACBox.Checked)
+                {
+                    realTimeUa = "1";
+                }
+
+                var noTimeUa = "0";
+                if (NoTimeCBox.Checked)
+                {
+                    noTimeUa = "1";
+                }
+
+                var changeIPTime = numericUpDownChangeIP.Value.ToString();
+
+                var url = urlCustom.Text == null ? "" : urlCustom.Text;
                 var lineSetting = threadCount + "|" + delayTypingLevel + "|" + typeAcc + "|" + modeRun + "|"
                     + ProxySP + "|" + chooseModeProxy + "|" + TimeUpdate + "|" + TimeRefresh + "|" + fakeUserAgent
                     + "|" + linkFix + "|" + accIndex + "|" + ips + "|" + pageLoadTime + "|" + checkIP + "|" + addEx
-                    + "|" + urlMode + "|" + url + accPre + "|" + checkLocate;
+                    + "|" + urlMode + "|" + url + accPre + "|" + checkLocate + "|" + requestMBasic + "|" + randomWWW
+                    + "|" + timeUa + "|" + realTimeUa + "|" + noTimeUa + "|" + changeIPTime;
                 var settingPath = AppDomain.CurrentDomain.BaseDirectory + "data//" + "Setting.txt";
                 File.WriteAllText(settingPath, lineSetting);
             }
@@ -1767,5 +2031,89 @@ namespace GetCookieFBTool
                 return "";
             }
         }
+
+        private void requestMBasicCBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (requestMBasicCBox.Checked)
+            {
+                requestWWWCBox.Checked = false;
+                requestWWWLoginCBox.Checked = false;
+                requestLogin2CBox.Checked = false;
+            }
+        }
+
+        private void requestWWWCBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (requestWWWCBox.Checked)
+            {
+                requestMBasicCBox.Checked = false;
+                requestWWWLoginCBox.Checked = false;
+                requestLogin2CBox.Checked = false;
+            }
+        }
+
+        private void requestWWWLoginCBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (requestWWWLoginCBox.Checked)
+            {
+                requestMBasicCBox.Checked = false;
+                requestWWWCBox.Checked = false;
+                requestLogin2CBox.Checked = false;
+            }
+        }
+
+        private void requestLogin2CBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (requestLogin2CBox.Checked)
+            {
+                requestMBasicCBox.Checked = false;
+                requestWWWCBox.Checked = false;
+                requestWWWLoginCBox.Checked = false;
+            }
+        }
+
+        public void RunClosePort()
+        {
+            // close all port open
+            try
+            {
+                int nProcessID = Process.GetCurrentProcess().Id;
+                string sPortClose = System.IO.Path.GetDirectoryName(Application.ExecutablePath) + "\\cports.exe";
+                var pCloseConectin = new System.Diagnostics.Process();
+
+                pCloseConectin.StartInfo.FileName = sPortClose;
+                pCloseConectin.StartInfo.Arguments = string.Format("/close * * * * {0}", nProcessID);
+                pCloseConectin.StartInfo.CreateNoWindow = true;
+                pCloseConectin.StartInfo.UseShellExecute = false;
+
+                pCloseConectin.Start();
+                pCloseConectin.WaitForExit(1000);   // wait 1sec
+                Trace.WriteLine("Close all connect at PID : " + nProcessID.ToString());
+
+            }
+            catch { }
+        }
+
+        public static void GhiFileBackUp()
+        {
+            while (true)
+            {
+                var lineBackup = FacebookInstances.numRan.ToString();
+                string listAccIndex = accCbox;
+                var backupPath = AppDomain.CurrentDomain.BaseDirectory + "data//" + $"backup_{listAccIndex}.txt";
+                File.WriteAllText(backupPath, lineBackup);
+
+                int dem = 0;
+                while(dem < 2 * 59 * 1000 && stopCmd == false)
+                {
+                    dem=dem+1000;
+                    Thread.Sleep(1000);
+                }
+                if(stopCmd == true) { break; }
+                
+            }
+        }
+
+       
     }
 }

@@ -83,6 +83,7 @@ namespace GetCookieFBTool
             this.Locate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.newLocate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.url_Identify = new System.Windows.Forms.RadioButton();
             this.checkLocateCBox = new System.Windows.Forms.CheckBox();
             this.label16 = new System.Windows.Forms.Label();
             this.urlRandom = new System.Windows.Forms.RadioButton();
@@ -112,6 +113,13 @@ namespace GetCookieFBTool
             this.clearSettingBtn = new System.Windows.Forms.Button();
             this.SaveSettingBtn = new System.Windows.Forms.Button();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.NoTimeCBox = new System.Windows.Forms.RadioButton();
+            this.RealTimeUACBox = new System.Windows.Forms.RadioButton();
+            this.TimeUACBox = new System.Windows.Forms.RadioButton();
+            this.randomCBox = new System.Windows.Forms.CheckBox();
+            this.requestWWWLoginCBox = new System.Windows.Forms.CheckBox();
+            this.requestWWWCBox = new System.Windows.Forms.CheckBox();
             this.accPreCBox = new System.Windows.Forms.CheckBox();
             this.requestMBasicCBox = new System.Windows.Forms.CheckBox();
             this.addExtensionCBox = new System.Windows.Forms.CheckBox();
@@ -151,6 +159,7 @@ namespace GetCookieFBTool
             this.TinsoftProxyMode = new System.Windows.Forms.RadioButton();
             this.ProxyRoratingV4Mode = new System.Windows.Forms.RadioButton();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.requestLogin2CBox = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.SettingTab.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -164,6 +173,7 @@ namespace GetCookieFBTool
             ((System.ComponentModel.ISupportInitialize)(this.delayLevelUD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.threadCountNumUD)).BeginInit();
             this.groupBox7.SuspendLayout();
+            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TimeRefreshUD)).BeginInit();
             this.groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownChangeIP)).BeginInit();
@@ -779,6 +789,7 @@ namespace GetCookieFBTool
             // 
             // groupBox8
             // 
+            this.groupBox8.Controls.Add(this.url_Identify);
             this.groupBox8.Controls.Add(this.checkLocateCBox);
             this.groupBox8.Controls.Add(this.label16);
             this.groupBox8.Controls.Add(this.urlRandom);
@@ -798,6 +809,20 @@ namespace GetCookieFBTool
             this.groupBox8.TabIndex = 35;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Other Setting";
+            // 
+            // url_Identify
+            // 
+            this.url_Identify.AutoSize = true;
+            this.url_Identify.Checked = true;
+            this.url_Identify.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.url_Identify.Location = new System.Drawing.Point(283, 118);
+            this.url_Identify.Margin = new System.Windows.Forms.Padding(2);
+            this.url_Identify.Name = "url_Identify";
+            this.url_Identify.Size = new System.Drawing.Size(83, 17);
+            this.url_Identify.TabIndex = 42;
+            this.url_Identify.TabStop = true;
+            this.url_Identify.Text = "login identify";
+            this.url_Identify.UseVisualStyleBackColor = true;
             // 
             // checkLocateCBox
             // 
@@ -845,10 +870,10 @@ namespace GetCookieFBTool
             this.urlMFB.Location = new System.Drawing.Point(283, 98);
             this.urlMFB.Margin = new System.Windows.Forms.Padding(2);
             this.urlMFB.Name = "urlMFB";
-            this.urlMFB.Size = new System.Drawing.Size(101, 17);
+            this.urlMFB.Size = new System.Drawing.Size(126, 17);
             this.urlMFB.TabIndex = 38;
             this.urlMFB.TabStop = true;
-            this.urlMFB.Text = "mfacebook.com";
+            this.urlMFB.Text = "mobile.facebook.com";
             this.urlMFB.UseVisualStyleBackColor = true;
             // 
             // urlMbasic
@@ -905,7 +930,7 @@ namespace GetCookieFBTool
             // pageLoadUD
             // 
             this.pageLoadUD.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pageLoadUD.Location = new System.Drawing.Point(126, 42);
+            this.pageLoadUD.Location = new System.Drawing.Point(391, 37);
             this.pageLoadUD.Margin = new System.Windows.Forms.Padding(2);
             this.pageLoadUD.Maximum = new decimal(new int[] {
             500,
@@ -913,14 +938,14 @@ namespace GetCookieFBTool
             0,
             0});
             this.pageLoadUD.Name = "pageLoadUD";
-            this.pageLoadUD.Size = new System.Drawing.Size(128, 20);
+            this.pageLoadUD.Size = new System.Drawing.Size(109, 20);
             this.pageLoadUD.TabIndex = 33;
             // 
             // label31
             // 
             this.label31.AutoSize = true;
             this.label31.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label31.Location = new System.Drawing.Point(23, 48);
+            this.label31.Location = new System.Drawing.Point(283, 42);
             this.label31.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label31.Name = "label31";
             this.label31.Size = new System.Drawing.Size(99, 13);
@@ -930,9 +955,10 @@ namespace GetCookieFBTool
             // linkFixCBox
             // 
             this.linkFixCBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkFixCBox.Location = new System.Drawing.Point(97, 18);
+            this.linkFixCBox.Location = new System.Drawing.Point(66, 18);
+            this.linkFixCBox.Multiline = true;
             this.linkFixCBox.Name = "linkFixCBox";
-            this.linkFixCBox.Size = new System.Drawing.Size(157, 20);
+            this.linkFixCBox.Size = new System.Drawing.Size(188, 56);
             this.linkFixCBox.TabIndex = 30;
             // 
             // label27
@@ -1093,7 +1119,7 @@ namespace GetCookieFBTool
             this.threadCountNumUD.Location = new System.Drawing.Point(9, 58);
             this.threadCountNumUD.Margin = new System.Windows.Forms.Padding(2);
             this.threadCountNumUD.Maximum = new decimal(new int[] {
-            500,
+            10000,
             0,
             0,
             0});
@@ -1165,6 +1191,11 @@ namespace GetCookieFBTool
             // 
             // groupBox7
             // 
+            this.groupBox7.Controls.Add(this.requestLogin2CBox);
+            this.groupBox7.Controls.Add(this.panel1);
+            this.groupBox7.Controls.Add(this.randomCBox);
+            this.groupBox7.Controls.Add(this.requestWWWLoginCBox);
+            this.groupBox7.Controls.Add(this.requestWWWCBox);
             this.groupBox7.Controls.Add(this.accPreCBox);
             this.groupBox7.Controls.Add(this.requestMBasicCBox);
             this.groupBox7.Controls.Add(this.addExtensionCBox);
@@ -1188,10 +1219,91 @@ namespace GetCookieFBTool
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Mode run";
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.NoTimeCBox);
+            this.panel1.Controls.Add(this.RealTimeUACBox);
+            this.panel1.Controls.Add(this.TimeUACBox);
+            this.panel1.Location = new System.Drawing.Point(423, 10);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(86, 55);
+            this.panel1.TabIndex = 26;
+            // 
+            // NoTimeCBox
+            // 
+            this.NoTimeCBox.AutoSize = true;
+            this.NoTimeCBox.Checked = true;
+            this.NoTimeCBox.Location = new System.Drawing.Point(2, 32);
+            this.NoTimeCBox.Margin = new System.Windows.Forms.Padding(2);
+            this.NoTimeCBox.Name = "NoTimeCBox";
+            this.NoTimeCBox.Size = new System.Drawing.Size(87, 17);
+            this.NoTimeCBox.TabIndex = 13;
+            this.NoTimeCBox.TabStop = true;
+            this.NoTimeCBox.Text = "noTime UA";
+            this.NoTimeCBox.UseVisualStyleBackColor = true;
+            // 
+            // RealTimeUACBox
+            // 
+            this.RealTimeUACBox.AutoSize = true;
+            this.RealTimeUACBox.Checked = true;
+            this.RealTimeUACBox.Location = new System.Drawing.Point(2, 16);
+            this.RealTimeUACBox.Margin = new System.Windows.Forms.Padding(2);
+            this.RealTimeUACBox.Name = "RealTimeUACBox";
+            this.RealTimeUACBox.Size = new System.Drawing.Size(90, 17);
+            this.RealTimeUACBox.TabIndex = 12;
+            this.RealTimeUACBox.TabStop = true;
+            this.RealTimeUACBox.Text = "realTimeUA";
+            this.RealTimeUACBox.UseVisualStyleBackColor = true;
+            // 
+            // TimeUACBox
+            // 
+            this.TimeUACBox.AutoSize = true;
+            this.TimeUACBox.Checked = true;
+            this.TimeUACBox.Location = new System.Drawing.Point(2, 2);
+            this.TimeUACBox.Margin = new System.Windows.Forms.Padding(2);
+            this.TimeUACBox.Name = "TimeUACBox";
+            this.TimeUACBox.Size = new System.Drawing.Size(80, 17);
+            this.TimeUACBox.TabIndex = 11;
+            this.TimeUACBox.TabStop = true;
+            this.TimeUACBox.Text = "rdTimeUA";
+            this.TimeUACBox.UseVisualStyleBackColor = true;
+            // 
+            // randomCBox
+            // 
+            this.randomCBox.AutoSize = true;
+            this.randomCBox.Location = new System.Drawing.Point(311, 80);
+            this.randomCBox.Name = "randomCBox";
+            this.randomCBox.Size = new System.Drawing.Size(107, 17);
+            this.randomCBox.TabIndex = 24;
+            this.randomCBox.Text = "random WWW";
+            this.randomCBox.UseVisualStyleBackColor = true;
+            // 
+            // requestWWWLoginCBox
+            // 
+            this.requestWWWLoginCBox.AutoSize = true;
+            this.requestWWWLoginCBox.Location = new System.Drawing.Point(177, 95);
+            this.requestWWWLoginCBox.Name = "requestWWWLoginCBox";
+            this.requestWWWLoginCBox.Size = new System.Drawing.Size(124, 17);
+            this.requestWWWLoginCBox.TabIndex = 23;
+            this.requestWWWLoginCBox.Text = "request 3W/login";
+            this.requestWWWLoginCBox.UseVisualStyleBackColor = true;
+            this.requestWWWLoginCBox.CheckedChanged += new System.EventHandler(this.requestWWWLoginCBox_CheckedChanged);
+            // 
+            // requestWWWCBox
+            // 
+            this.requestWWWCBox.AutoSize = true;
+            this.requestWWWCBox.Location = new System.Drawing.Point(177, 80);
+            this.requestWWWCBox.Name = "requestWWWCBox";
+            this.requestWWWCBox.Size = new System.Drawing.Size(108, 17);
+            this.requestWWWCBox.TabIndex = 22;
+            this.requestWWWCBox.Text = "request WWW";
+            this.requestWWWCBox.UseVisualStyleBackColor = true;
+            this.requestWWWCBox.CheckedChanged += new System.EventHandler(this.requestWWWCBox_CheckedChanged);
+            // 
             // accPreCBox
             // 
             this.accPreCBox.AutoSize = true;
-            this.accPreCBox.Location = new System.Drawing.Point(228, 50);
+            this.accPreCBox.Location = new System.Drawing.Point(177, 32);
             this.accPreCBox.Margin = new System.Windows.Forms.Padding(2);
             this.accPreCBox.Name = "accPreCBox";
             this.accPreCBox.Size = new System.Drawing.Size(96, 17);
@@ -1202,17 +1314,18 @@ namespace GetCookieFBTool
             // requestMBasicCBox
             // 
             this.requestMBasicCBox.AutoSize = true;
-            this.requestMBasicCBox.Location = new System.Drawing.Point(228, 113);
+            this.requestMBasicCBox.Location = new System.Drawing.Point(177, 64);
             this.requestMBasicCBox.Name = "requestMBasicCBox";
             this.requestMBasicCBox.Size = new System.Drawing.Size(112, 17);
             this.requestMBasicCBox.TabIndex = 20;
             this.requestMBasicCBox.Text = "request Mbasic";
             this.requestMBasicCBox.UseVisualStyleBackColor = true;
+            this.requestMBasicCBox.CheckedChanged += new System.EventHandler(this.requestMBasicCBox_CheckedChanged);
             // 
             // addExtensionCBox
             // 
             this.addExtensionCBox.AutoSize = true;
-            this.addExtensionCBox.Location = new System.Drawing.Point(359, 86);
+            this.addExtensionCBox.Location = new System.Drawing.Point(312, 65);
             this.addExtensionCBox.Name = "addExtensionCBox";
             this.addExtensionCBox.Size = new System.Drawing.Size(149, 17);
             this.addExtensionCBox.TabIndex = 19;
@@ -1222,7 +1335,7 @@ namespace GetCookieFBTool
             // checkIPCB
             // 
             this.checkIPCB.AutoSize = true;
-            this.checkIPCB.Location = new System.Drawing.Point(359, 58);
+            this.checkIPCB.Location = new System.Drawing.Point(311, 31);
             this.checkIPCB.Margin = new System.Windows.Forms.Padding(2);
             this.checkIPCB.Name = "checkIPCB";
             this.checkIPCB.Size = new System.Drawing.Size(77, 17);
@@ -1233,7 +1346,7 @@ namespace GetCookieFBTool
             // fakeUserAgentCB
             // 
             this.fakeUserAgentCB.AutoSize = true;
-            this.fakeUserAgentCB.Location = new System.Drawing.Point(359, 25);
+            this.fakeUserAgentCB.Location = new System.Drawing.Point(311, 16);
             this.fakeUserAgentCB.Margin = new System.Windows.Forms.Padding(2);
             this.fakeUserAgentCB.Name = "fakeUserAgentCB";
             this.fakeUserAgentCB.Size = new System.Drawing.Size(118, 17);
@@ -1278,7 +1391,7 @@ namespace GetCookieFBTool
             // getTokenCB
             // 
             this.getTokenCB.AutoSize = true;
-            this.getTokenCB.Location = new System.Drawing.Point(228, 84);
+            this.getTokenCB.Location = new System.Drawing.Point(177, 48);
             this.getTokenCB.Margin = new System.Windows.Forms.Padding(2);
             this.getTokenCB.Name = "getTokenCB";
             this.getTokenCB.Size = new System.Drawing.Size(80, 17);
@@ -1289,7 +1402,7 @@ namespace GetCookieFBTool
             // CookieSpCB
             // 
             this.CookieSpCB.AutoSize = true;
-            this.CookieSpCB.Location = new System.Drawing.Point(228, 24);
+            this.CookieSpCB.Location = new System.Drawing.Point(177, 16);
             this.CookieSpCB.Margin = new System.Windows.Forms.Padding(2);
             this.CookieSpCB.Name = "CookieSpCB";
             this.CookieSpCB.Size = new System.Drawing.Size(117, 17);
@@ -1384,15 +1497,20 @@ namespace GetCookieFBTool
             this.label19.Location = new System.Drawing.Point(445, 125);
             this.label19.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(50, 13);
+            this.label19.Size = new System.Drawing.Size(13, 13);
             this.label19.TabIndex = 71;
-            this.label19.Text = "minutes";
+            this.label19.Text = "s";
             // 
             // numericUpDownChangeIP
             // 
             this.numericUpDownChangeIP.ForeColor = System.Drawing.SystemColors.InfoText;
             this.numericUpDownChangeIP.Location = new System.Drawing.Point(351, 119);
             this.numericUpDownChangeIP.Margin = new System.Windows.Forms.Padding(2);
+            this.numericUpDownChangeIP.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
             this.numericUpDownChangeIP.Name = "numericUpDownChangeIP";
             this.numericUpDownChangeIP.Size = new System.Drawing.Size(90, 19);
             this.numericUpDownChangeIP.TabIndex = 70;
@@ -1569,14 +1687,19 @@ namespace GetCookieFBTool
             this.label14.Location = new System.Drawing.Point(248, 17);
             this.label14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(134, 13);
+            this.label14.Size = new System.Drawing.Size(97, 13);
             this.label14.TabIndex = 11;
-            this.label14.Text = "Time Update (minutes)";
+            this.label14.Text = "Time Update (s)";
             // 
             // TimeUpdateProxyUD
             // 
             this.TimeUpdateProxyUD.Location = new System.Drawing.Point(400, 15);
             this.TimeUpdateProxyUD.Margin = new System.Windows.Forms.Padding(2);
+            this.TimeUpdateProxyUD.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
             this.TimeUpdateProxyUD.Name = "TimeUpdateProxyUD";
             this.TimeUpdateProxyUD.Size = new System.Drawing.Size(100, 19);
             this.TimeUpdateProxyUD.TabIndex = 10;
@@ -1637,6 +1760,17 @@ namespace GetCookieFBTool
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // requestLogin2CBox
+            // 
+            this.requestLogin2CBox.AutoSize = true;
+            this.requestLogin2CBox.Location = new System.Drawing.Point(177, 109);
+            this.requestLogin2CBox.Name = "requestLogin2CBox";
+            this.requestLogin2CBox.Size = new System.Drawing.Size(106, 17);
+            this.requestLogin2CBox.TabIndex = 27;
+            this.requestLogin2CBox.Text = "requestLogin2";
+            this.requestLogin2CBox.UseVisualStyleBackColor = true;
+            this.requestLogin2CBox.CheckedChanged += new System.EventHandler(this.requestLogin2CBox_CheckedChanged);
+            // 
             // FromMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1670,6 +1804,8 @@ namespace GetCookieFBTool
             ((System.ComponentModel.ISupportInitialize)(this.threadCountNumUD)).EndInit();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TimeRefreshUD)).EndInit();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
@@ -1801,6 +1937,15 @@ namespace GetCookieFBTool
         private System.Windows.Forms.DataGridViewTextBoxColumn UserAgent;
         private System.Windows.Forms.DataGridViewTextBoxColumn Locate;
         private System.Windows.Forms.DataGridViewTextBoxColumn newLocate;
+        private System.Windows.Forms.RadioButton url_Identify;
+        private System.Windows.Forms.CheckBox requestWWWLoginCBox;
+        private System.Windows.Forms.CheckBox requestWWWCBox;
+        private System.Windows.Forms.CheckBox randomCBox;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.RadioButton TimeUACBox;
+        private System.Windows.Forms.RadioButton RealTimeUACBox;
+        private System.Windows.Forms.RadioButton NoTimeCBox;
+        private System.Windows.Forms.CheckBox requestLogin2CBox;
     }
 }
 

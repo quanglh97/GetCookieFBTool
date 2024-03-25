@@ -11,7 +11,7 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
 {
     internal class FacebookInstances
     {
-        public static string linkFix = null;
+        public static List<string> lsLinkFix = new List<string>();
         public static int numRan = 0;
         public static int pageLoadTime = 10;
         public static string typeAcc = "";
@@ -23,16 +23,26 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
         public static bool fakeUserAgent = false;
         public static bool addEx = false;
         public static bool requerstMBasic = false;
+        public static bool randomWWW = false;
+        public static bool requerstWWW = false;
+        public static bool requerstWWWLogin = false;
+        public static bool requerstLogin2 = false;
 
         public static bool waitChangeIP = false;
         public static bool checkLocate = false;
+        public static bool timeUa = false;
+        public static bool timeRealUa = false;
+        public static bool noTimeUa = false;
 
         public static int maxThread = 100;
         public static int urlType = 1;
         public static string urlCustom = "";
 
+        public static bool waitClearChrome = false;
+
         public static ConcurrentQueue<string> cookiePrepare = new ConcurrentQueue<string>();
         public static ConcurrentQueue<string> queueFakeUserAgent = new ConcurrentQueue<string>();
+        public static List<string> lsFakeUserAgent = new List<string>();
         public static ConcurrentQueue<string> queueAccPre = new ConcurrentQueue<string>();
         public static List<string> lsUrlCustom = new List<string>();
 
@@ -72,17 +82,17 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                 // save to file
                 string sLine =  newacc.userName + "|" + newacc.pass + "|" + obj.cookies + "|" + obj.token + "|" + newacc.key2fa + "|" +
                     newacc.locate + "|" + newacc.locateNew + "|"+
-                    obj.userAgent + "|" +
+                    obj.userAgent + "|" + status.Replace("\r","") + "|" +
                     DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-                if (status == "success")
+                if (status.Contains("success"))
                     dataSuccess.Enqueue(sLine);
                 //File.AppendAllText(FS.sFileExportSuccess, sLine + Environment.NewLine);
-                else if (status == "checkpoint")
+                else if (status.Contains("checkpoint"))
                 {
                     dataCheckPoint.Enqueue(sLine);
                     //File.AppendAllText(FS.sFileExportCheckPoint, sLine + Environment.NewLine);
                 }
-                else if (status == "lostCookies")
+                else if (status.Contains("lostCookies"))
                 {
                     dataLostCookies.Enqueue(sLine);
                     //File.AppendAllText(FS.sFileLostCookies, sLine + Environment.NewLine);
@@ -92,12 +102,12 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                     dataReCheck.Enqueue(sLine);
                     //File.AppendAllText(FS.sFileLostCookies, sLine + Environment.NewLine);
                 }
-                else if (status == "spam")
+                else if (status.Contains("spam"))
                 {
                     dataSpam.Enqueue(sLine);
                     //File.AppendAllText(FS.sFileLostCookies, sLine + Environment.NewLine);
                 }
-                else if(status == "no-veri")
+                else if(status.Contains("no-veri"))
                 {
                     dataNoveri.Enqueue(sLine + "|No-verify");
                 }    
