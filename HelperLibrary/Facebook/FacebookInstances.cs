@@ -12,6 +12,7 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
     internal class FacebookInstances
     {
         public static List<string> lsLinkFix = new List<string>();
+        public static List<string> lsUA = new List<string>();
         public static int numRan = 0;
         public static int pageLoadTime = 10;
         public static string typeAcc = "";
@@ -62,6 +63,7 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
 
         public static ConcurrentQueue<string> dataSuccess = new ConcurrentQueue<string>();
         public static ConcurrentQueue<string> dataError = new ConcurrentQueue<string>();
+        public static ConcurrentQueue<string> dataErrorNoReason = new ConcurrentQueue<string>();
         public static ConcurrentQueue<string> dataCheckPoint = new ConcurrentQueue<string>();
         public static ConcurrentQueue<string> dataLostCookies = new ConcurrentQueue<string>();
         public static ConcurrentQueue<string> dataReCheck = new ConcurrentQueue<string>();
@@ -111,7 +113,10 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                 {
                     dataNoveri.Enqueue(sLine + "|No-verify");
                 }    
-                else
+                else if (status.Contains("error"))
+                {
+                    dataErrorNoReason.Enqueue(sLine.Replace('\n', ' ') + "|" + status.Replace('\n', ' '));
+                }
                 {
                     
                     dataError.Enqueue(sLine.Replace('\n', ' ') + "|" + status.Replace('\n', ' '));
@@ -121,6 +126,24 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
             catch
             {
                 return;
+            }
+        }
+
+        public static void GenUA()
+        {
+            var lsUA = new List<string>();
+            Random rnd = new Random();
+            List<string> lsModelUA = new List<string> { "zh-Hans-CN; SDY-AN00", "zh-CN; PFUM10", "zh-CN; V2244A", "zh-Hans-CN; JLH-AN00", "zh-Hans-CN; BRQ-AL00" };
+            List<string> lsbuildUA = new List<string> { "HONORSDY-AN00", "SKQ1.211209.001", "TP1A.220624.014", "HONORJLH-AN00", "HUAWEIBRQ-AL00" };
+            for (int i = 0; i < 1000; i++)
+            {
+                int r = rnd.Next(lsModelUA.Count);
+                var model_ua = lsModelUA[r];
+                r = rnd.Next(lsbuildUA.Count);
+                var build_ua = lsbuildUA[r];
+                r = rnd.Next(1, 31);
+                var ua = $"Mozilla/5.0 (Linux; U; Android {r}; {model_ua} Build/{build_ua}; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/66.0.3359.126 MQQBrowser/6.2 TBS/044704 Mobile Safari/537.36";
+                FacebookInstances.lsUA.Add(ua);
             }
         }
     }

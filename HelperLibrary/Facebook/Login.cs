@@ -1155,7 +1155,7 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
 
 
             var restClient = new RestClient();
-            restClient.Timeout = -1;
+            restClient.Timeout = 10*1000;
             restClient.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36";
             if (!string.IsNullOrEmpty(proxy))
             {

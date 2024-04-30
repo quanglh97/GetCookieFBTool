@@ -19,6 +19,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
         public string sFileExportLostCookies = string.Empty;
         public string sFileExportRecheck = string.Empty;
         public string sFileExportError = string.Empty;
+        public string sFileExportErrorNoReason = string.Empty;
         public string LoggerFolderPath = string.Empty;
         public object LockReplace = new object();
         public object LockMsg = new object();
@@ -39,6 +40,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
 
             sFileExportSuccess += this.subFolderPath + "\\SAVE_OUT_PUT_SUCCESS.txt";
             sFileExportError += this.subFolderPath + "\\SAVE_OUT_PUT_ERROR.txt";
+            sFileExportErrorNoReason += this.subFolderPath + "\\SAVE_OUT_PUT_ERROR_NO_REASON.txt";
             sFileExportCheckPoint += this.subFolderPath + "\\SAVE_OUT_PUT_CHECKPOINT.txt";
             sFileExportLostCookies += this.subFolderPath + "\\SAVE_OUT_PUT_LOSTCOOKIES.txt";
 
@@ -50,8 +52,9 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
 
             this.subFolderPath = AppDomain.CurrentDomain.BaseDirectory + "Result\\";
 
-            sFileExportSuccess += this.subFolderPath + $"\\SAVE_OUT_PUT_SUCCESS_";
+            sFileExportSuccess += this.subFolderPath + $"\\SAVE_OUT_PUT_SUCCESS.txt";
             sFileExportError += this.subFolderPath + "\\SAVE_OUT_PUT_ERROR.txt";
+            sFileExportErrorNoReason += this.subFolderPath + "\\SAVE_OUT_PUT_ERROR_NO_REASON.txt";
             sFileExportCheckPoint += this.subFolderPath + "\\SAVE_OUT_PUT_CHECKPOINT.txt";
             sFileExportLostCookies += this.subFolderPath + "\\SAVE_OUT_PUT_LOSTCOOKIES.txt";
             sFileExportRecheck += AppDomain.CurrentDomain.BaseDirectory + "\\data" + "\\SAVE_OUT_PUT_RECHECK.txt";

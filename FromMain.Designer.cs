@@ -113,6 +113,7 @@ namespace GetCookieFBTool
             this.clearSettingBtn = new System.Windows.Forms.Button();
             this.SaveSettingBtn = new System.Windows.Forms.Button();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.requestLogin2CBox = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.NoTimeCBox = new System.Windows.Forms.RadioButton();
             this.RealTimeUACBox = new System.Windows.Forms.RadioButton();
@@ -159,7 +160,6 @@ namespace GetCookieFBTool
             this.TinsoftProxyMode = new System.Windows.Forms.RadioButton();
             this.ProxyRoratingV4Mode = new System.Windows.Forms.RadioButton();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.requestLogin2CBox = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.SettingTab.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -1219,6 +1219,17 @@ namespace GetCookieFBTool
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Mode run";
             // 
+            // requestLogin2CBox
+            // 
+            this.requestLogin2CBox.AutoSize = true;
+            this.requestLogin2CBox.Location = new System.Drawing.Point(177, 109);
+            this.requestLogin2CBox.Name = "requestLogin2CBox";
+            this.requestLogin2CBox.Size = new System.Drawing.Size(106, 17);
+            this.requestLogin2CBox.TabIndex = 27;
+            this.requestLogin2CBox.Text = "requestLogin2";
+            this.requestLogin2CBox.UseVisualStyleBackColor = true;
+            this.requestLogin2CBox.CheckedChanged += new System.EventHandler(this.requestLogin2CBox_CheckedChanged);
+            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.NoTimeCBox);
@@ -1494,7 +1505,7 @@ namespace GetCookieFBTool
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(445, 125);
+            this.label19.Location = new System.Drawing.Point(422, 125);
             this.label19.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(13, 13);
@@ -1504,7 +1515,7 @@ namespace GetCookieFBTool
             // numericUpDownChangeIP
             // 
             this.numericUpDownChangeIP.ForeColor = System.Drawing.SystemColors.InfoText;
-            this.numericUpDownChangeIP.Location = new System.Drawing.Point(351, 119);
+            this.numericUpDownChangeIP.Location = new System.Drawing.Point(322, 119);
             this.numericUpDownChangeIP.Margin = new System.Windows.Forms.Padding(2);
             this.numericUpDownChangeIP.Maximum = new decimal(new int[] {
             10000,
@@ -1759,17 +1770,6 @@ namespace GetCookieFBTool
             // 
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // requestLogin2CBox
-            // 
-            this.requestLogin2CBox.AutoSize = true;
-            this.requestLogin2CBox.Location = new System.Drawing.Point(177, 109);
-            this.requestLogin2CBox.Name = "requestLogin2CBox";
-            this.requestLogin2CBox.Size = new System.Drawing.Size(106, 17);
-            this.requestLogin2CBox.TabIndex = 27;
-            this.requestLogin2CBox.Text = "requestLogin2";
-            this.requestLogin2CBox.UseVisualStyleBackColor = true;
-            this.requestLogin2CBox.CheckedChanged += new System.EventHandler(this.requestLogin2CBox_CheckedChanged);
             // 
             // FromMain
             // 

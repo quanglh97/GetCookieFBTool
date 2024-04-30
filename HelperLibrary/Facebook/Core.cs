@@ -120,7 +120,7 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
 
             // remove bar
             options.AddExcludedArgument("enable-automation");
-            options.AddAdditionalCapability("useAutomationExtension", false);
+            //options.AddAdditionalCapability("useAutomationExtension", false);
             options.AddArgument("--disable-web-security");
             options.AddArgument("--disable-blink-features=AutomationControlled");
             options.AddArgument("--no-sandbox");
@@ -207,6 +207,11 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
 
                         if (new_proxy.Split(':').Length <= 2)
                         {
+                            //if(ProxyInstances.type == 3)
+                            //{
+                            //    options.AddArgument($"--proxy-server={new_proxy}");
+                            //}
+                            /*else*/
                             if (ProxyInstances.type != 10 && ProxyInstances.type != 14)
                             {
                                 var proxy = new Proxy();
@@ -1366,7 +1371,7 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                 options.AddArgument("ignore-certificate-errors");
 
                 options.AddExcludedArgument("enable-automation");
-                options.AddAdditionalCapability("useAutomationExtension", false);
+                //options.AddAdditionalCapability("useAutomationExtension", false);
                 options.AddArgument("--disable-web-security");
                 options.AddArgument("--disable-blink-features=AutomationControlled");
                 options.AddArgument("--no-sandbox");
@@ -1520,13 +1525,15 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
             string new_proxy = "";
             if (FacebookInstances.fakeUserAgent)
             {
+                //Random r = new Random();
+                //userAgent = FacebookInstances.lsUA[r.Next(FacebookInstances.lsUA.Count)];
 
                 int a = random.Next(0, FacebookInstances.lsFakeUserAgent.Count);
-                //FacebookInstances.queueFakeUserAgent.TryDequeue(out userAgent);
+                FacebookInstances.queueFakeUserAgent.TryDequeue(out userAgent);
                 userAgent = FacebookInstances.lsFakeUserAgent[a];
                 if (userAgent != null)
                 {
-                    //FacebookInstances.queueFakeUserAgent.Enqueue(userAgent);
+                    FacebookInstances.queueFakeUserAgent.Enqueue(userAgent);
                 }
                 else
                 {
@@ -1602,7 +1609,7 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                                      + "|" + userAgent + "|" + "sai pass" + " - URL: " + url + "|" +
                                      DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
                         FacebookInstances.OnNewAccAdded(account, "sai pass" + " - URL: " + url, cookies, "", userAgent);
-                        sendResultToServer(data, "sai pass");
+                        //sendResultToServer(data, "sai pass");
                         return;
                     }
                     foreach (dynamic item in rawCookie)
@@ -1638,13 +1645,14 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                 //    return null;
                 //return null;
 
-
+                return;
 
 
             }
             catch (Exception e)
             {
                 FacebookInstances.OnNewAccAdded(account, e.Message, null, null, userAgent);
+                return;
             }
         }
 

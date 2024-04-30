@@ -244,6 +244,8 @@ namespace GetCookieFBTool
 
         public void defaultSetting()
         {
+            FacebookInstances.GenUA();
+
             dtListResultOTP.RowHeadersVisible = false;
             var tinsoftKeyFilePath = AppDomain.CurrentDomain.BaseDirectory + "data//" + "TinsoftProxyKey.txt";
             var TMKeyFilePath = AppDomain.CurrentDomain.BaseDirectory + "data//" + "TMProxyKey.txt";
@@ -1110,6 +1112,7 @@ namespace GetCookieFBTool
 
                 if (NoneProxyMode.Checked == false)
                 {
+                    ProxyInstances.userProxy = true;
                     while (true && stopCmd == false)
                     {
                         getProxy();
@@ -1197,6 +1200,12 @@ namespace GetCookieFBTool
                             string sLine = "";
                             FacebookInstances.dataError.TryDequeue(out sLine);
                             File.AppendAllText(FS.sFileExportError, sLine + Environment.NewLine);
+                        }
+                        while (FacebookInstances.dataErrorNoReason.Count > 0)
+                        {
+                            string sLine = "";
+                            FacebookInstances.dataErrorNoReason.TryDequeue(out sLine);
+                            File.AppendAllText(FS.sFileExportErrorNoReason, sLine + Environment.NewLine);
                         }
                         while (FacebookInstances.dataCheckPoint.Count > 0)
                         {
@@ -2011,7 +2020,7 @@ namespace GetCookieFBTool
                 options.AddArgument("ignore-certificate-errors");
 
                 options.AddExcludedArgument("enable-automation");
-                options.AddAdditionalCapability("useAutomationExtension", false);
+                //options.AddAdditionalCapability("useAutomationExtension", false);
                 options.AddArgument("--disable-web-security");
                 options.AddArgument("--disable-blink-features=AutomationControlled");
                 options.AddArgument("--no-sandbox");
