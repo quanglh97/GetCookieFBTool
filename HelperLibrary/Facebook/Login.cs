@@ -713,17 +713,26 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
             {
                 if (PostData.Contains("EntryPointRenderer:DisabledAccountCometApp.entrypoint:comet.checkpoint.disabled"))
                 {
+                    request.Detele();
                     return 0;
                 }
                 // Thanh cong. Get cookie.
                 cookies = request.GetCookie();
                 if (cookies.Contains("c_user") && !cookies.Contains("checkpoint"))
+                {
+                    request.Detele();
                     return 1;
+                }
                 else
+                {
+
+                    request.Detele();
                     return 0;
+                }
             }
             else
             {
+                request.Detele();
                 return -1;
                 //That bai!
             }
@@ -807,14 +816,22 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
             {
                 if (PostData.Contains("EntryPointRenderer:DisabledAccountCometApp.entrypoint:comet.checkpoint.disabled"))
                 {
+                    request.Detele();
                     return 0;
                 }
                 // Thanh cong. Get cookie.
                 cookies = request.GetCookie();
                 if (cookies.Contains("c_user") && !cookies.Contains("checkpoint"))
+                {
+
+                    request.Detele();
                     return 1;
+                }
                 else
+                {
+                    request.Detele();
                     return 0;
+                }
             }
             else
             {
@@ -1203,7 +1220,10 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
             //resLog = _request.Send("https://b-api.facebook.com/method/auth.login", Method.Post, headers, dataPost);
 
             if (string.IsNullOrEmpty(resLog))
+            {
+                
                 return "ERROR";
+            }
 
             string firstFactor = Regex.Match(resLog.Replace("\\", ""), @"login_first_factor"":""(.*?)""").Groups[1].Value;
 

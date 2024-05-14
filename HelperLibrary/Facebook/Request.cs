@@ -131,7 +131,8 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
 
         public void Detele()
         {
-            //this.request.
+            this.request.Dispose();
+            this.request = null;
         }
 
         // Token: 0x060000DB RID: 219 RVA: 0x00009DC4 File Offset: 0x00007FC4
