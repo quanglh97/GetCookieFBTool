@@ -50,6 +50,45 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
             else
                 options.AddArgument("--window-size=400,800");
             //options.AddArgument("--headless");
+            options.AddArgument("force-device-scale-factor=0.5");
+            //options.AddArgument("force-device-scale-factor=1");
+            options.AddArgument("high-dpi-support=0.5");
+            //options.AddArgument("high-dpi-support=1");
+            var numThread = Thread.CurrentThread.Name.Replace("Thread #", "");
+            var pro5 = Int32.Parse(numThread) + 1;
+
+            // set position, custome here
+            #region calc position for profile
+            {
+                // calc size
+                int max_width = Screen.PrimaryScreen.Bounds.Width * 2;
+                int max_height = Screen.PrimaryScreen.Bounds.Height * 2;
+                int width = 600;
+                int height = 600;
+                options.AddArgument($"--window-size={width},{height}");
+
+                // calc max position for pro5
+                int distance_x = 600;
+                int distance_y = 600;
+                int max_column = (max_width - width) / distance_x + 1;
+                int max_row = (max_height - height) / distance_y + 1;
+
+                // calc position (pro5 % max_column == 0) ? (pro5 / max_column) % max_row : 
+                int row = (pro5 % max_column == 0) ? (((pro5 / max_column) % max_row == 0) ? (pro5 / max_column) % max_row + 1 : (pro5 / max_column) % max_row) : (pro5 / max_column) % max_row + 1;
+                int column = (pro5 % max_column == 0) ? max_column : pro5 % max_column;
+
+                int margin_width_postion = (column - 1) * distance_x;
+                int margin_height_position = (row - 1) * distance_y;
+
+                string position = $"--window-position={margin_width_postion},{margin_height_position}";
+                options.AddArgument(position);
+            }
+            #endregion
+
+
+
+
+
             options.AddArgument("ignore-certificate-errors");
             Init(account, options);
         }
@@ -180,11 +219,11 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
 
                 if (ProxyInstances.userProxy == true)
                 {
-                    while (ProxyInstances.Http.Count == 0)
+                    while (ProxyInstances.queueHttp.Count == 0)
                     {
                         Thread.Sleep(5 * 1000);
                     }
-                    if (!ProxyInstances.Http.TryDequeue(out new_proxy) || new_proxy == null)
+                    if (!ProxyInstances.queueHttp.TryDequeue(out new_proxy) || new_proxy == null)
                     {
                         throw new Exception("proxy empty!");
                     }
@@ -199,11 +238,17 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                         {
                             if (currentTime - ProxyInstances.beginTime <= ProxyInstances.timeUpdate)
                             {
-                                ProxyInstances.Http.Enqueue(new_proxy);
+                                ProxyInstances.queueHttp.Enqueue(new_proxy);
                             }
                         }
                         else
-                            ProxyInstances.Http.Enqueue(new_proxy);
+                        {
+                            ProxyInstances.queueHttp.Enqueue(new_proxy);
+
+                            var rd = new Random();
+                            var index = rd.Next(0, ProxyInstances.lsHttp.Count);
+                            new_proxy = ProxyInstances.lsHttp[index];
+                        }
 
                         if (new_proxy.Split(':').Length <= 2)
                         {
@@ -512,7 +557,7 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
 
                     //    sendResultToServer(data, "success");
                     //}
-                    else if (driver.Url.Contains("checkpoint"))
+                    else if (driver.Url.Contains("checkpoint") && !driver.Url.Contains("601051028565049"))
                     {
                         if (FacebookInstances.checkLocate)
                         {
@@ -767,7 +812,7 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                         driver.Quit();
                         return;
                     }
-                    else if (driver.Url.Contains("checkpoint"))
+                    else if (driver.Url.Contains("checkpoint")&& !driver.Url.Contains("601051028565049"))
                     {
                         if (FacebookInstances.checkLocate)
                         {
@@ -1059,7 +1104,7 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
 
                     //    sendResultToServer(data, "success");
                     //}
-                    else if (driver.Url.Contains("checkpoint"))
+                    else if (driver.Url.Contains("checkpoint") && !driver.Url.Contains("601051028565049"))
                     {
                         if (FacebookInstances.checkLocate)
                         {
@@ -1294,7 +1339,7 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                 HttpRequest httpRequest = new HttpRequest();
                 httpRequest.Proxy = HttpProxyClient.Parse(proxy);
                 httpRequest.ReadWriteTimeout = 15000;
-                httpRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36";// Http.ChromeUserAgent();
+                httpRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36";// queueHttp.ChromeUserAgent();
                 httpRequest.IgnoreProtocolErrors = true;
                 httpRequest.SslCertificateValidatorCallback += (sender, certificate, chain, sslPolicyErrors) => true;
                 var response = httpRequest.Get($"https://www.facebook.com/", null);
@@ -1450,11 +1495,11 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
 
             if (ProxyInstances.userProxy == true)
             {
-                while (ProxyInstances.Http.Count == 0)
+                while (ProxyInstances.queueHttp.Count == 0)
                 {
                     Thread.Sleep(5 * 1000);
                 }
-                if (!ProxyInstances.Http.TryDequeue(out new_proxy) || new_proxy == null)
+                if (!ProxyInstances.queueHttp.TryDequeue(out new_proxy) || new_proxy == null)
                 {
                     throw new Exception("proxy empty!");
                 }
@@ -1469,11 +1514,16 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                     {
                         if (currentTime - ProxyInstances.beginTime <= ProxyInstances.timeUpdate)
                         {
-                            ProxyInstances.Http.Enqueue(new_proxy);
+                            ProxyInstances.queueHttp.Enqueue(new_proxy);
                         }
                     }
                     else
-                        ProxyInstances.Http.Enqueue(new_proxy);
+                    {
+                        ProxyInstances.queueHttp.Enqueue(new_proxy);
+                        var rd = new Random();
+                        var index = rd.Next(0, ProxyInstances.lsHttp.Count);
+                        new_proxy = ProxyInstances.lsHttp[index];
+                    }
                 }
             }
             FacebookInstances.numRan += 1;
@@ -1485,6 +1535,12 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                 //httpRequest.userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36");
                 var cookies = "";
                 var checkRequest = Login.LoginMethodMBasic_XNET(httpRequest, account.userName, account.pass, account.key2fa, out cookies);
+                var numRelogin = FacebookInstances.numRelogin;
+                while (numRelogin > 0 && checkRequest != true && FacebookInstances.relogin)
+                {
+                    checkRequest = Login.LoginMethodMBasic_XNET(httpRequest, account.userName, account.pass, account.key2fa, out cookies);
+                    numRelogin--;
+                }
                 if (checkRequest)
                 {
                     var data = account.userName + "|" + account.pass + "|" + cookies + "|" + "" + "|" + account.key2fa
@@ -1560,11 +1616,11 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
 
             if (ProxyInstances.userProxy == true)
             {
-                while (ProxyInstances.Http.Count == 0)
+                while (ProxyInstances.queueHttp.Count == 0)
                 {
                     Thread.Sleep(5 * 1000);
                 }
-                if (!ProxyInstances.Http.TryDequeue(out new_proxy) || new_proxy == null)
+                if (!ProxyInstances.queueHttp.TryDequeue(out new_proxy) || new_proxy == null)
                 {
                     throw new Exception("proxy empty!");
                 }
@@ -1579,11 +1635,16 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                     {
                         if (currentTime - ProxyInstances.beginTime <= ProxyInstances.timeUpdate)
                         {
-                            ProxyInstances.Http.Enqueue(new_proxy);
+                            ProxyInstances.queueHttp.Enqueue(new_proxy);
                         }
                     }
                     else
-                        ProxyInstances.Http.Enqueue(new_proxy);
+                    {
+                        ProxyInstances.queueHttp.Enqueue(new_proxy);
+                        var rd = new Random();
+                        var index = rd.Next(0, ProxyInstances.lsHttp.Count);
+                        new_proxy = ProxyInstances.lsHttp[index];
+                    }
                 }
             }
             FacebookInstances.numRan += 1;
@@ -1711,7 +1772,7 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                 if (ProxyInstances.userProxy == true)
                 {
                     int checkProxy = 0;
-                    while (ProxyInstances.Http.Count == 0)
+                    while (ProxyInstances.queueHttp.Count == 0)
                     {
                         checkProxy++;
                         Thread.Sleep(5 * 1000);
@@ -1731,7 +1792,7 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                     //}
 
 
-                    if (!ProxyInstances.Http.TryDequeue(out new_proxy) || new_proxy == null)
+                    if (!ProxyInstances.queueHttp.TryDequeue(out new_proxy) || new_proxy == null)
                     {
                         FacebookInstances.OnNewAccAdded(account, "proxy empty", null, null, null);
                         FacebookInstances.MultiThrs.queueAccs.Enqueue(account);
@@ -1749,11 +1810,17 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                         {
                             if (currentTime - ProxyInstances.beginTime <= ProxyInstances.timeUpdate)
                             {
-                                ProxyInstances.Http.Enqueue(new_proxy);
+                                ProxyInstances.queueHttp.Enqueue(new_proxy);
                             }
                         }
                         else
-                            ProxyInstances.Http.Enqueue(new_proxy);
+                        {
+                            ProxyInstances.queueHttp.Enqueue(new_proxy);
+
+                            var rd = new Random();
+                            var index = rd.Next(0, ProxyInstances.lsHttp.Count);
+                            new_proxy = ProxyInstances.lsHttp[index];
+                        }
                     }
                 }
 
@@ -1791,6 +1858,38 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                             checkRequest = Login.LoginMethodLoginWWW_XNET(account.userName, account.pass, account.key2fa, userAgent, new_proxy, out cookies);
                         }
                     }
+
+                    var numRelogin = FacebookInstances.numRelogin;
+                    while (numRelogin > 0 && checkRequest != 1 && FacebookInstances.relogin)
+                    {
+                        if (FacebookInstances.requerstWWW && FacebookInstances.randomWWW == false)
+                        {
+                            url = " - URL: WWW";
+                            checkRequest = Login.LoginMethodWWW_XNET(account.userName, account.pass, account.key2fa, userAgent, new_proxy, out cookies);
+                        }
+                        //checkRequest = Login.LoginWWW_HTTPRequest(account.userName, account.pass, account.key2fa, userAgent, new_proxy, out cookies);
+                        else if (FacebookInstances.requerstWWWLogin && FacebookInstances.randomWWW == false)
+                        {
+                            url = " - URL: WWW/login";
+                            checkRequest = Login.LoginMethodLoginWWW_XNET(account.userName, account.pass, account.key2fa, userAgent, new_proxy, out cookies);
+                        }
+                        //checkRequest = Login.LoginWWWLogin_HTTPRequest(account.userName, account.pass, account.key2fa, userAgent, new_proxy, out cookies);
+                        else if (FacebookInstances.randomWWW == true)
+                        {
+                            if (random.Next(1, 3) % 2 == 0)
+                            {
+                                url = " - URL: WWW";
+                                checkRequest = Login.LoginMethodWWW_XNET(account.userName, account.pass, account.key2fa, userAgent, new_proxy, out cookies);
+                            }
+                            else
+                            {
+                                url = " - URL: WWW/login";
+                                checkRequest = Login.LoginMethodLoginWWW_XNET(account.userName, account.pass, account.key2fa, userAgent, new_proxy, out cookies);
+                            }
+                        }
+                        numRelogin--;
+                    }
+
 
                     if (checkRequest == 1)
                     {

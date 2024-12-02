@@ -20,7 +20,7 @@ namespace GetCookieFBTool
                 HttpRequest httpRequest = new HttpRequest();
                 httpRequest.Proxy = HttpProxyClient.Parse(proxy);
                 httpRequest.ReadWriteTimeout = 15000;
-                httpRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36";// Http.ChromeUserAgent();
+                httpRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36";// queueHttp.ChromeUserAgent();
                 httpRequest.IgnoreProtocolErrors = true;
                 httpRequest.SslCertificateValidatorCallback += (sender, certificate, chain, sslPolicyErrors) => true;
                 var response = httpRequest.Get($"https://www.facebook.com/", null);

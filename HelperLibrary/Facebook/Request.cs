@@ -65,19 +65,10 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                             break;
                         }
                     case 4:
-                        this.request.Proxy = new HttpProxyClient(proxy.Split(new char[]
-                        {
-                        ':'
-                        })[0], Convert.ToInt32(proxy.Split(new char[]
-                        {
-                        ':'
-                        })[1]), proxy.Split(new char[]
-                        {
-                        ':'
-                        })[2], proxy.Split(new char[]
-                        {
-                        ':'
-                        })[3]);
+                        this.request.Proxy = new HttpProxyClient(proxy.Split(new char[]{':'})[0], 
+                            Convert.ToInt32(proxy.Split(new char[]{':'})[1]), 
+                            proxy.Split(new char[]{':'})[2], 
+                            proxy.Split(new char[]{':'})[3]);
                         this.request.Proxy.ConnectTimeout = 5000;
                         break;
                 }

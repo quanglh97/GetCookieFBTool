@@ -13,11 +13,14 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System;
+using System.Net;
 
 namespace GetCookieFBTool
 {
@@ -39,7 +42,7 @@ namespace GetCookieFBTool
         public static int checkpoint = 0;
         public static int spam = 0;
 
-        
+
 
         public static string accCbox = "";
 
@@ -636,7 +639,7 @@ namespace GetCookieFBTool
                     {
                         TimeUACBox.Checked = true;
                     }
-                    else if(setting[21] == "1")
+                    else if (setting[21] == "1")
                     {
                         RealTimeUACBox.Checked = true;
                     }
@@ -653,6 +656,31 @@ namespace GetCookieFBTool
                 try
                 {
                     numericUpDownChangeIP.Value = Int32.Parse(setting[23]);
+                }
+                catch
+                {
+
+                }
+                try
+                {
+                    NotifyNoProxyCBox.Checked = setting[24] == "1" ? true : false;
+                }
+                catch
+                {
+
+                }
+                try
+                {
+                    ReloginCBox.Checked = setting[25] == "1" ? true : false;
+                }
+                catch
+                {
+
+                }
+
+                try
+                {
+                    NumReloginUD.Value = Int32.Parse(setting[26]);
                 }
                 catch
                 {
@@ -933,12 +961,12 @@ namespace GetCookieFBTool
             //}
 
             int nCountProxy = 0;
-            if (ProxyInstances.Http != null)
+            if (ProxyInstances.queueHttp != null)
             {
                 ProxyStateLb.Text = "get list proxy complete";
                 ProxyStateLb.ForeColor = Color.Green;
-                //nCountProxy += FacebookInstances.Http.Count;
-                nCountProxy += ProxyInstances.Http.Count;
+                //nCountProxy += FacebookInstances.queueHttp.Count;
+                nCountProxy += ProxyInstances.queueHttp.Count;
             }
 
             //Statistic.AllProxy = nCountProxy;
@@ -1058,7 +1086,7 @@ namespace GetCookieFBTool
 
                     while (ProxyInstances.MultiThrs.IsWorking)
                     {
-                        m_oWorker.ReportProgress(0, ProxyInstances.Http);
+                        m_oWorker.ReportProgress(0, ProxyInstances.queueHttp);
                         Thread.Sleep(1 * 1000);
                     }
 
@@ -1078,8 +1106,9 @@ namespace GetCookieFBTool
                     try
                     {
                         hashSet.UnionWith(FileLoader.LoadStringsFromFile(sFileProxy));
-                        ProxyInstances.Http = new ConcurrentQueue<string>(hashSet);
-                        m_oWorker.ReportProgress(0, ProxyInstances.Http);
+                        ProxyInstances.queueHttp = new ConcurrentQueue<string>(hashSet);
+                        ProxyInstances.lsHttp = ProxyInstances.queueHttp.ToList();
+                        m_oWorker.ReportProgress(0, ProxyInstances.queueHttp);
 
                     }
                     finally
@@ -1094,14 +1123,15 @@ namespace GetCookieFBTool
 
         void m_oWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            Thread ghiFile = new Thread(() => {
+            Thread ghiFile = new Thread(() =>
+            {
                 GhiFileBackUp();
             });
             ghiFile.Start();
 
             try
             {
-                if (NoneProxyMode.Checked)
+                if (NoneProxyMode.Checked && FacebookInstances.NotifyNoProxy)
                 {
                     Thread thread = new Thread(() => WaitChangeIP.Wait2ChangeIP(timeWait2ChangeIP, stopCmd))
                     {
@@ -1116,7 +1146,7 @@ namespace GetCookieFBTool
                     while (true && stopCmd == false)
                     {
                         getProxy();
-                        if (ProxyInstances.Http.Count == 0)
+                        if (ProxyInstances.queueHttp.Count == 0)
                         {
                             int time = 0;
                             while (time < 115)
@@ -1180,7 +1210,7 @@ namespace GetCookieFBTool
                         {
                             string sLine = "";
                             FacebookInstances.dataSuccess.TryDequeue(out sLine);
-                            File.AppendAllText(FS.sFileExportSuccess + $"{DateTime.Now.Day}_{DateTime.Now.Month}_{DateTime.Now.Year}.txt", sLine + Environment.NewLine);
+                            File.AppendAllText(FS.sFileExportSuccess + $"_{DateTime.Now.Day}_{DateTime.Now.Month}_{DateTime.Now.Year}.txt", sLine + Environment.NewLine);
                         }
                         while (FacebookInstances.dataCookiePre.Count > 0)
                         {
@@ -1193,7 +1223,7 @@ namespace GetCookieFBTool
                         {
                             string sLine = "";
                             FacebookInstances.dataNoveri.TryDequeue(out sLine);
-                            File.AppendAllText(FS.sFileExportSuccess + $"{DateTime.Now.Day}_{DateTime.Now.Month}_{DateTime.Now.Year}.txt", sLine + Environment.NewLine);
+                            File.AppendAllText(FS.sFileExportSuccess + $"_{DateTime.Now.Day}_{DateTime.Now.Month}_{DateTime.Now.Year}.txt", sLine + Environment.NewLine);
                         }
                         while (FacebookInstances.dataError.Count > 0)
                         {
@@ -1234,7 +1264,7 @@ namespace GetCookieFBTool
 
                         if (NoneProxyMode.Checked == false)
                         {
-                            if (ProxyInstances.Http.Count == 0)
+                            if (ProxyInstances.queueHttp.Count == 0)
                             {
                                 if (ProxyInstances.type == 0 || ProxyInstances.type == 1 || ProxyInstances.type == 4
                                     || ProxyInstances.type == 5 || ProxyInstances.type == 7 || ProxyInstances.type == 8
@@ -1253,7 +1283,7 @@ namespace GetCookieFBTool
                         }
 
                         m_oWorker.ReportProgress(1);
-                        m_oWorker.ReportProgress(0, ProxyInstances.Http);
+                        m_oWorker.ReportProgress(0, ProxyInstances.queueHttp);
                         Thread.Sleep(200);
                     }
                     catch (Exception ex)
@@ -1337,9 +1367,25 @@ namespace GetCookieFBTool
         }
         private void startBtn_Click_1(object sender, EventArgs e)
         {
+            //:::12233
+            var username = "user-masterT1_M4kiB";
+            var password = "Maychu1";
+            var proxy = "ul.4bl61gsv.lunaproxy.net:12233";
+
+            //var client = new WebClient();
+            //client.Proxy = new WebProxy(proxy);
+            //client.Proxy.Credentials = new NetworkCredential(username, password);
+            //client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; " +"Windows NT 5.2; .NET CLR 1.0.3705;)");
+            //var text = client.DownloadString("https://www.facebook.com/");
+            //return;
+
             accCbox = listAccCbBox.SelectedItem.ToString();
 
             IPSTbox.Text = AddIP();
+
+            FacebookInstances.NotifyNoProxy = NotifyNoProxyCBox.Checked;
+            FacebookInstances.relogin = ReloginCBox.Checked;
+            FacebookInstances.numRelogin = (int)NumReloginUD.Value;
 
             if (randomCBox.Checked)
                 FacebookInstances.randomWWW = true;
@@ -1647,7 +1693,7 @@ namespace GetCookieFBTool
                 FacebookInstances.MultiThrs.Cancel();
                 this.totalAccTBox.Text = FacebookInstances.MultiThrs.Count.ToString();
                 ProxyInstances.MultiThrs.Cancel();
-                ProxyInstances.Clear(ProxyInstances.Http);
+                ProxyInstances.Clear(ProxyInstances.queueHttp);
                 while (FacebookInstances.MultiThrs.IsWorking)
                 {
                     ProxyStateLb.Text = "program is canceling";
@@ -1874,12 +1920,27 @@ namespace GetCookieFBTool
 
                 var changeIPTime = numericUpDownChangeIP.Value.ToString();
 
+                var notifyNoProxy = "0";
+                if (NotifyNoProxyCBox.Checked)
+                {
+                    notifyNoProxy = "1";
+                }
+                var relogin = "0";
+                if (ReloginCBox.Checked)
+                {
+                    relogin = "1";
+                }
+
+                var numRelogin = NumReloginUD.Value.ToString();
+
+
                 var url = urlCustom.Text == null ? "" : urlCustom.Text;
                 var lineSetting = threadCount + "|" + delayTypingLevel + "|" + typeAcc + "|" + modeRun + "|"
                     + ProxySP + "|" + chooseModeProxy + "|" + TimeUpdate + "|" + TimeRefresh + "|" + fakeUserAgent
                     + "|" + linkFix + "|" + accIndex + "|" + ips + "|" + pageLoadTime + "|" + checkIP + "|" + addEx
                     + "|" + urlMode + "|" + url + accPre + "|" + checkLocate + "|" + requestMBasic + "|" + randomWWW
-                    + "|" + timeUa + "|" + realTimeUa + "|" + noTimeUa + "|" + changeIPTime;
+                    + "|" + timeUa + "|" + realTimeUa + "|" + noTimeUa + "|" + changeIPTime
+                    + "|" + notifyNoProxy + "|" + relogin + "|" + numRelogin;
                 var settingPath = AppDomain.CurrentDomain.BaseDirectory + "data//" + "Setting.txt";
                 File.WriteAllText(settingPath, lineSetting);
             }
@@ -2113,16 +2174,16 @@ namespace GetCookieFBTool
                 File.WriteAllText(backupPath, lineBackup);
 
                 int dem = 0;
-                while(dem < 2 * 59 * 1000 && stopCmd == false)
+                while (dem < 2 * 59 * 1000 && stopCmd == false)
                 {
-                    dem=dem+1000;
+                    dem = dem + 1000;
                     Thread.Sleep(1000);
                 }
-                if(stopCmd == true) { break; }
-                
+                if (stopCmd == true) { break; }
+
             }
         }
 
-       
+
     }
 }

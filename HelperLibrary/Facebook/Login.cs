@@ -16,6 +16,7 @@ using System.Web;
 using RestSharp;
 using System.Security.Policy;
 using OpenQA.Selenium.DevTools;
+using System.Globalization;
 
 namespace GetCookieFBTool.HelperLibrary.Facebook
 {
@@ -1185,13 +1186,21 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                         }
                     case 4:
                         {
-                            WebProxy webProxy = new WebProxy(proxy.Split(':')[0], int.Parse(proxy.Split(':')[1]));
-                            webProxy.Credentials = new NetworkCredential(proxy.Split(':')[2], proxy.Split(':')[3]);
-                            restClient.Proxy = webProxy;
+                            var prxEle = proxy.Split(':');
+                            var urlBuilder = new UriBuilder(prxEle[0]);
+                            urlBuilder.Port = int.Parse(prxEle[1]);
+
+                            //Set credentials
+                            ICredentials credentials = new NetworkCredential(prxEle[2], prxEle[3]);
+
+                            //Set proxy
+                            restClient.Proxy = new WebProxy(urlBuilder.Uri, true, null, credentials);
                             break;
                         }
                 }
             }
+            //var testrequest = new RestRequest("https://www.google.com/", Method.GET);
+            //var test = restClient.Execute(testrequest);
             //if(!string.IsNullOrEmpty(userAgent))
             //    restClient.UserAgent = userAgent;
             var request = new RestRequest("https://b-api.facebook.com/method/auth.login", Method.POST);

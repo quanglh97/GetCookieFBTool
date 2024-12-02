@@ -38,7 +38,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
             this.subFolderPath = AppDomain.CurrentDomain.BaseDirectory + "Result\\";
             this.mainFolderPath = AppDomain.CurrentDomain.BaseDirectory + "Result\\" + baseFileName;
 
-            sFileExportSuccess += this.subFolderPath + "\\SAVE_OUT_PUT_SUCCESS.txt";
+            sFileExportSuccess += this.subFolderPath + "\\SAVE_OUT_PUT_SUCCESS";
             sFileExportError += this.subFolderPath + "\\SAVE_OUT_PUT_ERROR.txt";
             sFileExportErrorNoReason += this.subFolderPath + "\\SAVE_OUT_PUT_ERROR_NO_REASON.txt";
             sFileExportCheckPoint += this.subFolderPath + "\\SAVE_OUT_PUT_CHECKPOINT.txt";
@@ -52,7 +52,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
 
             this.subFolderPath = AppDomain.CurrentDomain.BaseDirectory + "Result\\";
 
-            sFileExportSuccess += this.subFolderPath + $"\\SAVE_OUT_PUT_SUCCESS.txt";
+            sFileExportSuccess += this.subFolderPath + $"\\SAVE_OUT_PUT_SUCCESS";
             sFileExportError += this.subFolderPath + "\\SAVE_OUT_PUT_ERROR.txt";
             sFileExportErrorNoReason += this.subFolderPath + "\\SAVE_OUT_PUT_ERROR_NO_REASON.txt";
             sFileExportCheckPoint += this.subFolderPath + "\\SAVE_OUT_PUT_CHECKPOINT.txt";

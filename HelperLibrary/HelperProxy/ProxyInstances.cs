@@ -9,7 +9,8 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
 {
     public static class ProxyInstances
     {
-        public static ConcurrentQueue<string> Http = new ConcurrentQueue<string>();
+        public static ConcurrentQueue<string> queueHttp = new ConcurrentQueue<string>();
+        public static List<string> lsHttp = new List<string>();
         public static MultiThreading<string> MultiThrs = new MultiThreading<string>();
         public static int type = 1;
         public static long beginTime = 0;

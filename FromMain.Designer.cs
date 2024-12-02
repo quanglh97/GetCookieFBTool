@@ -160,6 +160,9 @@ namespace GetCookieFBTool
             this.TinsoftProxyMode = new System.Windows.Forms.RadioButton();
             this.ProxyRoratingV4Mode = new System.Windows.Forms.RadioButton();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.ReloginCBox = new System.Windows.Forms.CheckBox();
+            this.NotifyNoProxyCBox = new System.Windows.Forms.CheckBox();
+            this.NumReloginUD = new System.Windows.Forms.NumericUpDown();
             this.tabControl1.SuspendLayout();
             this.SettingTab.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -178,6 +181,7 @@ namespace GetCookieFBTool
             this.groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownChangeIP)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TimeUpdateProxyUD)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumReloginUD)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -617,7 +621,7 @@ namespace GetCookieFBTool
             // 
             this.label5.AutoSize = true;
             this.label5.ForeColor = System.Drawing.Color.DarkGoldenrod;
-            this.label5.Location = new System.Drawing.Point(9, 47);
+            this.label5.Location = new System.Drawing.Point(11, 47);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(40, 16);
@@ -789,6 +793,8 @@ namespace GetCookieFBTool
             // 
             // groupBox8
             // 
+            this.groupBox8.Controls.Add(this.NumReloginUD);
+            this.groupBox8.Controls.Add(this.ReloginCBox);
             this.groupBox8.Controls.Add(this.url_Identify);
             this.groupBox8.Controls.Add(this.checkLocateCBox);
             this.groupBox8.Controls.Add(this.label16);
@@ -815,7 +821,7 @@ namespace GetCookieFBTool
             this.url_Identify.AutoSize = true;
             this.url_Identify.Checked = true;
             this.url_Identify.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.url_Identify.Location = new System.Drawing.Point(283, 118);
+            this.url_Identify.Location = new System.Drawing.Point(211, 119);
             this.url_Identify.Margin = new System.Windows.Forms.Padding(2);
             this.url_Identify.Name = "url_Identify";
             this.url_Identify.Size = new System.Drawing.Size(83, 17);
@@ -840,7 +846,7 @@ namespace GetCookieFBTool
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(22, 143);
+            this.label16.Location = new System.Drawing.Point(4, 141);
             this.label16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(60, 13);
@@ -853,7 +859,7 @@ namespace GetCookieFBTool
             this.urlRandom.AutoSize = true;
             this.urlRandom.Checked = true;
             this.urlRandom.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.urlRandom.Location = new System.Drawing.Point(23, 79);
+            this.urlRandom.Location = new System.Drawing.Point(5, 77);
             this.urlRandom.Margin = new System.Windows.Forms.Padding(2);
             this.urlRandom.Name = "urlRandom";
             this.urlRandom.Size = new System.Drawing.Size(74, 17);
@@ -867,7 +873,7 @@ namespace GetCookieFBTool
             this.urlMFB.AutoSize = true;
             this.urlMFB.Checked = true;
             this.urlMFB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.urlMFB.Location = new System.Drawing.Point(283, 98);
+            this.urlMFB.Location = new System.Drawing.Point(211, 99);
             this.urlMFB.Margin = new System.Windows.Forms.Padding(2);
             this.urlMFB.Name = "urlMFB";
             this.urlMFB.Size = new System.Drawing.Size(126, 17);
@@ -881,7 +887,7 @@ namespace GetCookieFBTool
             this.urlMbasic.AutoSize = true;
             this.urlMbasic.Checked = true;
             this.urlMbasic.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.urlMbasic.Location = new System.Drawing.Point(283, 77);
+            this.urlMbasic.Location = new System.Drawing.Point(211, 78);
             this.urlMbasic.Margin = new System.Windows.Forms.Padding(2);
             this.urlMbasic.Name = "urlMbasic";
             this.urlMbasic.Size = new System.Drawing.Size(129, 17);
@@ -893,9 +899,9 @@ namespace GetCookieFBTool
             // urlCustom
             // 
             this.urlCustom.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.urlCustom.Location = new System.Drawing.Point(98, 140);
+            this.urlCustom.Location = new System.Drawing.Point(66, 139);
             this.urlCustom.Name = "urlCustom";
-            this.urlCustom.Size = new System.Drawing.Size(343, 20);
+            this.urlCustom.Size = new System.Drawing.Size(169, 20);
             this.urlCustom.TabIndex = 36;
             this.urlCustom.Visible = false;
             // 
@@ -904,7 +910,7 @@ namespace GetCookieFBTool
             this.urlFBCom.AutoSize = true;
             this.urlFBCom.Checked = true;
             this.urlFBCom.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.urlFBCom.Location = new System.Drawing.Point(23, 121);
+            this.urlFBCom.Location = new System.Drawing.Point(5, 119);
             this.urlFBCom.Margin = new System.Windows.Forms.Padding(2);
             this.urlFBCom.Name = "urlFBCom";
             this.urlFBCom.Size = new System.Drawing.Size(57, 17);
@@ -918,7 +924,7 @@ namespace GetCookieFBTool
             this.urlNomal.AutoSize = true;
             this.urlNomal.Checked = true;
             this.urlNomal.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.urlNomal.Location = new System.Drawing.Point(23, 100);
+            this.urlNomal.Location = new System.Drawing.Point(5, 98);
             this.urlNomal.Margin = new System.Windows.Forms.Padding(2);
             this.urlNomal.Name = "urlNomal";
             this.urlNomal.Size = new System.Drawing.Size(204, 17);
@@ -1458,6 +1464,7 @@ namespace GetCookieFBTool
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.NotifyNoProxyCBox);
             this.groupBox6.Controls.Add(this.label22);
             this.groupBox6.Controls.Add(this.label19);
             this.groupBox6.Controls.Add(this.numericUpDownChangeIP);
@@ -1771,6 +1778,48 @@ namespace GetCookieFBTool
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // ReloginCBox
+            // 
+            this.ReloginCBox.AutoSize = true;
+            this.ReloginCBox.Location = new System.Drawing.Point(356, 77);
+            this.ReloginCBox.Name = "ReloginCBox";
+            this.ReloginCBox.Size = new System.Drawing.Size(64, 17);
+            this.ReloginCBox.TabIndex = 43;
+            this.ReloginCBox.Text = "relogin";
+            this.ReloginCBox.UseVisualStyleBackColor = true;
+            // 
+            // NotifyNoProxyCBox
+            // 
+            this.NotifyNoProxyCBox.AutoSize = true;
+            this.NotifyNoProxyCBox.Location = new System.Drawing.Point(250, 151);
+            this.NotifyNoProxyCBox.Name = "NotifyNoProxyCBox";
+            this.NotifyNoProxyCBox.Size = new System.Drawing.Size(110, 17);
+            this.NotifyNoProxyCBox.TabIndex = 73;
+            this.NotifyNoProxyCBox.Text = "Notify NoProxy";
+            this.NotifyNoProxyCBox.UseVisualStyleBackColor = true;
+            // 
+            // NumReloginUD
+            // 
+            this.NumReloginUD.Location = new System.Drawing.Point(423, 75);
+            this.NumReloginUD.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.NumReloginUD.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.NumReloginUD.Name = "NumReloginUD";
+            this.NumReloginUD.Size = new System.Drawing.Size(77, 19);
+            this.NumReloginUD.TabIndex = 44;
+            this.NumReloginUD.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // FromMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1811,6 +1860,7 @@ namespace GetCookieFBTool
             this.groupBox6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownChangeIP)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.TimeUpdateProxyUD)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumReloginUD)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1946,6 +1996,9 @@ namespace GetCookieFBTool
         private System.Windows.Forms.RadioButton RealTimeUACBox;
         private System.Windows.Forms.RadioButton NoTimeCBox;
         private System.Windows.Forms.CheckBox requestLogin2CBox;
+        private System.Windows.Forms.CheckBox ReloginCBox;
+        private System.Windows.Forms.CheckBox NotifyNoProxyCBox;
+        private System.Windows.Forms.NumericUpDown NumReloginUD;
     }
 }
 

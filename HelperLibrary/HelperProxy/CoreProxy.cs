@@ -39,7 +39,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
                             return;
                         }
                     }
-                    ProxyInstances.Http.Enqueue(new_proxy);
+                    ProxyInstances.queueHttp.Enqueue(new_proxy);
                     return;
                 }
             }
@@ -64,7 +64,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
                 }
                 if (new_proxy.Contains(":") && new_proxy.Split('.').Length >= 4)
                 {
-                    ProxyInstances.Http.Enqueue(new_proxy);
+                    ProxyInstances.queueHttp.Enqueue(new_proxy);
                     return;
                 }
             }
@@ -85,7 +85,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
                 }
                 if (new_proxy.Contains(":") && new_proxy.Split('.').Length >= 4)
                 {
-                    ProxyInstances.Http.Enqueue(new_proxy);
+                    ProxyInstances.queueHttp.Enqueue(new_proxy);
                     return;
                 }
             }
@@ -106,7 +106,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
                 }
                 if (new_proxy.Contains(":") && new_proxy.Split('.').Length >= 4)
                 {
-                    ProxyInstances.Http.Enqueue(new_proxy);
+                    ProxyInstances.queueHttp.Enqueue(new_proxy);
                     return;
                 }
             }
@@ -127,7 +127,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
                 //}
                 if (new_proxy.Contains(":") && new_proxy.Split('.').Length >= 4)
                 {
-                    ProxyInstances.Http.Enqueue(new_proxy);
+                    ProxyInstances.queueHttp.Enqueue(new_proxy);
                     return;
                 }
             }
@@ -167,7 +167,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
                 //}
                 if (newProxy.Contains(":") && newProxy.Split('.').Length >= 3)
                 {
-                    ProxyInstances.Http.Enqueue(newProxy);
+                    ProxyInstances.queueHttp.Enqueue(newProxy);
                 }
             }
         }
@@ -210,7 +210,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
                 }
                 if (newProxy.Contains(":") && newProxy.Split('.').Length >= 3)
                 {
-                    ProxyInstances.Http.Enqueue(newProxy);
+                    ProxyInstances.queueHttp.Enqueue(newProxy);
                 }
             }
         }
@@ -251,7 +251,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
                     }
                     if (newProxy.Contains(":") && newProxy.Split('.').Length >= 3)
                     {
-                        ProxyInstances.Http.Enqueue(newProxy);
+                        ProxyInstances.queueHttp.Enqueue(newProxy);
                     }
                 }
             }
@@ -274,7 +274,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
                 {
                     if (newProxy.Contains(":") && newProxy.Split('.').Length >= 3)
                     {
-                        ProxyInstances.Http.Enqueue(newProxy);
+                        ProxyInstances.queueHttp.Enqueue(newProxy);
                     }
                 }
             }
@@ -297,7 +297,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
                 {
                     if (newProxy.Contains(":") && newProxy.Split('.').Length >= 3)
                     {
-                        ProxyInstances.Http.Enqueue(newProxy);
+                        ProxyInstances.queueHttp.Enqueue(newProxy);
                     }
                 }
             }
@@ -322,7 +322,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
                     }
                     if (newProxy.Contains(":") && newProxy.Split('.').Length >= 3)
                     {
-                        ProxyInstances.Http.Enqueue(newProxy);
+                        ProxyInstances.queueHttp.Enqueue(newProxy);
                     }
                 }
             }
@@ -336,7 +336,7 @@ namespace GetCookieFBTool.HelperLibrary.HelperProxy
                 if (newProxy == "") return;
                 if (newProxy.Contains(":") && newProxy.Split('.').Length >= 3)
                 {
-                    ProxyInstances.Http.Enqueue(newProxy);
+                    ProxyInstances.queueHttp.Enqueue(newProxy);
                 }
             }
         }

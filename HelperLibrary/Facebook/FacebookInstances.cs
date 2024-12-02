@@ -28,6 +28,9 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
         public static bool requerstWWW = false;
         public static bool requerstWWWLogin = false;
         public static bool requerstLogin2 = false;
+        public static bool relogin = false;
+        public static int numRelogin = 1;
+        public static bool NotifyNoProxy = false;
 
         public static bool waitChangeIP = false;
         public static bool checkLocate = false;
@@ -117,7 +120,7 @@ namespace GetCookieFBTool.HelperLibrary.Facebook
                 {
                     dataErrorNoReason.Enqueue(sLine.Replace('\n', ' ') + "|" + status.Replace('\n', ' '));
                 }
-                {
+                else{
                     
                     dataError.Enqueue(sLine.Replace('\n', ' ') + "|" + status.Replace('\n', ' '));
                     //File.AppendAllText(FS.sFileExportError, sLine + Environment.NewLine);
